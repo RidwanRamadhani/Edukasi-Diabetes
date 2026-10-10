@@ -72,7 +72,7 @@ interface DiabetesContextType {
     phone?: string;
     currentWeight?: number;
     height?: number;
-  }) => { success: boolean; message: string };
+  }) => Promise<{ success: boolean; message: string }>;
   logout: () => void;
   isCloudDbConnected: boolean;
   addBloodSugarLog: (newLog: Omit<BloodSugarLog, "id" | "createdAt">) => BloodSugarLog;
@@ -288,7 +288,7 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Authentication: Patient Register
-  const register = (userData: {
+  const register = async (userData: {
     name: string;
     email: string;
     password: string;
@@ -298,9 +298,11 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
     phone?: string;
     currentWeight?: number;
     height?: number;
-  }) => {
+  }): Promise<{ success: boolean; message: string }> => {
     const cleanEmail = userData.email.trim().toLowerCase();
-    const alreadyExists = registeredUsers.some((u) => u.email.toLowerCase() === cleanEmail);
+    const alreadyExists =
+      registeredUsers.some((u) => u.email.toLowerCase() === cleanEmail) ||
+      monitoredPatients.some((p) => p.email.toLowerCase() === cleanEmail);
 
     if (alreadyExists) {
       return {
@@ -348,22 +350,27 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem(STORAGE_KEYS.AUTH_SESSION, JSON.stringify(true));
     } catch {}
 
-    // Synchronize to Supabase Cloud Database
+    // Synchronize to Supabase Cloud Database (awaited so redirection does not abort network request)
+    let cloudSynced = false;
     if (isSupabaseConfigured()) {
-      syncPatientToSupabase(newAccount, userData.password)
-        .then((res) => {
-          if (res.success) {
-            console.log("Patient successfully saved to Supabase:", res.message);
-          }
-        })
-        .catch((err) => {
-          console.warn("Supabase background registration error:", err);
-        });
+      try {
+        const syncRes = await syncPatientToSupabase(newAccount, userData.password);
+        if (syncRes.success) {
+          cloudSynced = true;
+          console.log("Patient successfully saved to Supabase:", syncRes.message);
+        } else {
+          console.warn("Supabase background registration note:", syncRes.message);
+        }
+      } catch (err) {
+        console.warn("Supabase background registration error:", err);
+      }
     }
 
     return {
       success: true,
-      message: `Akun pasien ${newAccount.name} berhasil didaftarkan dan Anda langsung masuk!`,
+      message: cloudSynced
+        ? `Akun pasien ${newAccount.name} berhasil didaftarkan dan tersimpan di database Cloud Supabase!`
+        : `Akun pasien ${newAccount.name} berhasil didaftarkan!`,
     };
   };
 

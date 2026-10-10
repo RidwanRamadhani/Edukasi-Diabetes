@@ -22,6 +22,7 @@ import {
   Stethoscope,
   Phone,
   Database,
+  Loader2,
 } from "lucide-react";
 import { useDiabetesStore } from "@/lib/storage";
 
@@ -61,6 +62,7 @@ export function AuthView() {
   // Alert feedback
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,8 +85,10 @@ export function AuthView() {
     }
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     setErrorMsg("");
     setSuccessMsg("");
 
@@ -108,23 +112,31 @@ export function AuthView() {
       return;
     }
 
-    const res = register({
-      name: regName,
-      email: regEmail,
-      phone: regPhone.trim() || undefined,
-      password: regPassword,
-      diabetesType: regDiabetesType,
-      age: regAge,
-      gender: regGender,
-    });
+    setIsSubmitting(true);
 
-    if (res.success) {
-      setSuccessMsg(res.message);
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1500);
-    } else {
-      setErrorMsg(res.message);
+    try {
+      const res = await register({
+        name: regName,
+        email: regEmail,
+        phone: regPhone.trim() || undefined,
+        password: regPassword,
+        diabetesType: regDiabetesType,
+        age: regAge,
+        gender: regGender,
+      });
+
+      if (res.success) {
+        setSuccessMsg(res.message);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1200);
+      } else {
+        setErrorMsg(res.message);
+        setIsSubmitting(false);
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Terjadi kendala saat mendaftarkan akun. Silakan coba lagi.");
+      setIsSubmitting(false);
     }
   };
 
@@ -533,10 +545,24 @@ export function AuthView() {
 
               <button
                 type="submit"
-                className="w-full mt-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer transition-transform hover:scale-[1.01]"
+                disabled={isSubmitting}
+                className={`w-full mt-2 py-3 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all ${
+                  isSubmitting
+                    ? "bg-slate-400 text-white cursor-not-allowed"
+                    : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20 hover:scale-[1.01]"
+                }`}
               >
-                <UserPlus className="w-4 h-4" />
-                <span>Daftar &amp; Buka Rekam Medis</span>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Menyimpan ke Cloud Supabase...</span>
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="w-4 h-4" />
+                    <span>Daftar &amp; Buka Rekam Medis</span>
+                  </>
+                )}
               </button>
 
               <div className="pt-2 text-center">

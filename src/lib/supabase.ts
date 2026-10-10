@@ -47,32 +47,7 @@ export async function syncPatientToSupabase(
   }
 
   try {
-    let authUserId: string | null = null;
-
-    // 1. If password provided, register user in Supabase Auth
-    if (password) {
-      try {
-        const { data: authData, error: authErr } = await supabase.auth.signUp({
-          email: patient.email.toLowerCase(),
-          password: password,
-          options: {
-            data: {
-              name: patient.name,
-              diabetesType: patient.diabetesType,
-              age: patient.age,
-            },
-          },
-        });
-
-        if (!authErr && authData?.user) {
-          authUserId = authData.user.id;
-        }
-      } catch (err) {
-        console.warn("Supabase Auth sign up note:", err);
-      }
-    }
-
-    // 2. Upsert into public.patients table
+    // 1. Upsert into public.patients table immediately (guarantees fast cloud persistence)
     const patientRow: Record<string, any> = {
       id: patient.id,
       name: patient.name,
@@ -93,10 +68,6 @@ export async function syncPatientToSupabase(
       risk_status: patient.riskStatus || "Terkontrol",
     };
 
-    if (authUserId) {
-      patientRow.auth_user_id = authUserId;
-    }
-
     const { data, error } = await supabase
       .from("patients")
       .upsert(patientRow, { onConflict: "email" })
@@ -105,6 +76,34 @@ export async function syncPatientToSupabase(
     if (error) {
       console.error("Supabase patient upsert error:", error);
       return { success: false, message: error.message };
+    }
+
+    // 2. Non-blocking Supabase Auth registration in background (does not delay patient persistence)
+    if (password) {
+      supabase.auth
+        .signUp({
+          email: patient.email.toLowerCase(),
+          password: password,
+          options: {
+            data: {
+              name: patient.name,
+              diabetesType: patient.diabetesType,
+              age: patient.age,
+            },
+          },
+        })
+        .then(({ data: authData, error: authErr }) => {
+          if (!authErr && authData?.user) {
+            supabase
+              .from("patients")
+              .update({ auth_user_id: authData.user.id })
+              .eq("email", patient.email.toLowerCase())
+              .then(() => {});
+          }
+        })
+        .catch((err) => {
+          console.warn("Supabase Auth background sign up note:", err);
+        });
     }
 
     return {
