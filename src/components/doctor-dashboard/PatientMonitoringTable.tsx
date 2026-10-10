@@ -62,7 +62,7 @@ export function PatientMonitoringTable({
     const matchesSearch =
       p.name.toLowerCase().includes(searchPatient.toLowerCase()) ||
       p.email.toLowerCase().includes(searchPatient.toLowerCase()) ||
-      p.diabetesType.toLowerCase().includes(searchPatient.toLowerCase());
+      (p.healthGoal || p.diabetesType || "").toLowerCase().includes(searchPatient.toLowerCase());
 
     const matchesRisk = filterRisk === "ALL" || p.riskStatus === filterRisk;
     return matchesSearch && matchesRisk;
@@ -141,10 +141,10 @@ export function PatientMonitoringTable({
         <table className="w-full text-left text-xs border-collapse">
           <thead>
             <tr className="bg-slate-50/80 border-b border-slate-100 text-slate-500 uppercase tracking-wider font-semibold">
-              <th className="py-3 px-4">Nama Pasien</th>
-              <th className="py-3 px-4">Klasifikasi</th>
-              <th className="py-3 px-4">Gula Darah Terakhir</th>
-              <th className="py-3 px-4">Status Risiko</th>
+              <th className="py-3 px-4">Nama Pengguna</th>
+              <th className="py-3 px-4">Fokus DIASERA</th>
+              <th className="py-3 px-4">Status / Skor Risiko</th>
+              <th className="py-3 px-4">Evaluasi Risiko</th>
               <th className="py-3 px-4">Pemeriksaan Terakhir</th>
               <th className="py-3 px-4 text-right">Aksi Klinis</th>
             </tr>
@@ -176,28 +176,30 @@ export function PatientMonitoringTable({
                     </div>
                   </td>
 
-                  {/* Tipe Diabetes */}
+                  {/* Fokus DIASERA */}
                   <td className="py-3.5 px-4 whitespace-nowrap font-medium text-slate-800">
-                    {patient.diabetesType}
+                    {patient.healthGoal || patient.diabetesType || "Pencegahan Primer"}
                   </td>
 
                   {/* Kadar Gula Darah */}
+                  {/* Status / Skor Risiko */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
                     <div className="flex items-baseline gap-1">
                       <span className="text-sm font-extrabold text-slate-900">
-                        {patient.lastBloodSugarLevel || "--"}
+                        {patient.latestRiskScore !== undefined ? `Skor ${patient.latestRiskScore}` : (patient.lastBloodSugarLevel ? `${patient.lastBloodSugarLevel} mg/dL` : "Skor 0")}
                       </span>
-                      <span className="text-[10px] text-slate-500 font-semibold">mg/dL</span>
                     </div>
-                    <p className="text-[10px] text-slate-400">{patient.lastBloodSugarContext}</p>
+                    <p className="text-[10px] text-slate-400">
+                      {patient.latestRiskCategory ? `FINDRISC: ${patient.latestRiskCategory}` : (patient.lastBloodSugarContext || "Pencegahan")}
+                    </p>
                   </td>
 
-                  {/* Status Risiko */}
+                  {/* Evaluasi Risiko */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${riskColor}`}
                     >
-                      {patient.riskStatus || "Terkontrol"}
+                      {patient.latestRiskCategory ? `Risiko ${patient.latestRiskCategory}` : (patient.riskStatus || "Terkontrol")}
                     </span>
                   </td>
 

@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DiaCare — Aplikasi Edukasi dan Manajemen Kesehatan Diabetes",
+  title: "DIASERA — Media Edukasi Interaktif & Pemantauan Perilaku Hidup Sehat untuk Pencegahan serta Pengendalian Diabetes Melitus",
   description:
-    "Platform manajemen mandiri diabetes terintegrasi: pencatatan gula darah, kalkulator indeks & beban glikemik, serta edukasi terverifikasi dokter spesialis.",
+    "Website DIASERA: Media edukasi interaktif terverifikasi dokter, skrining cek risiko diabetes FINDRISC, dan pemantauan perilaku hidup sehat mandiri untuk pencegahan serta pengendalian Diabetes Melitus.",
 };
 
 export default function RootLayout({
@@ -42,10 +42,10 @@ export default function RootLayout({
           <footer className="w-full border-t border-slate-200 bg-white py-6 mt-12 text-center text-xs text-slate-500">
             <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
               <p className="font-medium text-slate-600">
-                © 2026 DiaCare — Edukasi &amp; Manajemen Mandiri Diabetes
+                © 2026 DIASERA — Media Edukasi Interaktif &amp; Pemantauan Perilaku Hidup Sehat
               </p>
               <p className="text-[11px] text-slate-600">
-                Diverifikasi Klinis sesuai Pedoman PERKENI (Perkumpulan Endokrinologi Indonesia)
+                Pencegahan serta Pengendalian Diabetes Melitus • Sesuai Pedoman Klinis Kemenkes RI &amp; PERKENI
               </p>
             </div>
           </footer>

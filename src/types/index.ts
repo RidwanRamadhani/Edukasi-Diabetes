@@ -1,16 +1,23 @@
 export type UserRole = "patient" | "doctor";
 
+export type HealthGoal =
+  | "Pencegahan Primer (Belum Kena DM)"
+  | "Deteksi Dini & Cek Risiko DM"
+  | "Pemantauan Pola Hidup Sehat"
+  | "Kelompok Waspada / Faktor Risiko Keluarga";
+
 export interface UserProfile {
   id: string;
   name: string;
   email: string;
   gender: "Laki-laki" | "Perempuan";
   age: number;
-  diabetesType: "Diabetes Tipe 1" | "Diabetes Tipe 2" | "Prediabetes" | "Gestasional";
+  healthGoal?: HealthGoal;
+  diabetesType?: string; // Menyimpan status pencegahan / kompatibilitas Supabase (default: "Pencegahan Primer")
   currentWeight: number; // kg
   height: number; // cm
-  targetSugarFasting: number; // mg/dL
-  targetSugarPostPrandial: number; // mg/dL
+  targetSugarFasting?: number; // mg/dL
+  targetSugarPostPrandial?: number; // mg/dL
   medicalHistory: string;
   emergencyContact: string;
   phone?: string;
@@ -18,6 +25,14 @@ export interface UserProfile {
   lastBloodSugarContext?: string;
   lastCheckDate?: string;
   riskStatus?: "Terkontrol" | "Waspada" | "Tinggi";
+  // DIASERA Risk Assessment fields
+  latestRiskScore?: number; // Skor FINDRISC (0 - 26)
+  latestRiskCategory?: "Rendah" | "Sedang" | "Tinggi";
+  latestRiskDate?: string;
+  // DIASERA Healthy Lifestyle Targets
+  targetDailySteps?: number; // misal 7500 langkah
+  targetDailyActivityMinutes?: number; // misal 30 menit
+  targetWaterGlasses?: number; // misal 8 gelas
 }
 
 export interface DoctorProfile {
@@ -34,6 +49,45 @@ export interface DoctorProfile {
   role: "doctor";
 }
 
+// Skrining Cek Risiko Diabetes Melitus (FINDRISC - Finnish Diabetes Risk Score adaptasi Kemenkes RI)
+export interface RiskAssessmentResult {
+  id: string;
+  userId: string;
+  totalScore: number;
+  riskCategory: "Rendah" | "Sedang" | "Tinggi";
+  tenYearRiskEstimate: string; // misal "< 1% (1 dari 100 orang)", "17% (1 dari 6 orang)", "33-50% (1 dari 2-3 orang)"
+  bmi: number;
+  answers: {
+    ageCategory: string; // misal "< 45 th", "45-54 th", "55-64 th", "> 64 th"
+    bmiCategory: string; // misal "< 25", "25-30", "> 30"
+    waistCategory: string; // misal "< 90 cm (P) / < 80 cm (W)", "90-102 cm", "> 102 cm"
+    dailyPhysicalActivity: boolean; // >= 30 menit per hari
+    dailyVeggieFruit: boolean; // makan sayur & buah tiap hari
+    hypertensionMeds: boolean; // konsumsi obat anti-hipertensi
+    highBloodSugarHistory: boolean; // riwayat pernah gula darah tinggi
+    familyDiabetesHistory: "none" | "secondDegree" | "firstDegree";
+  };
+  recommendations: string[];
+  assessedAt: string;
+}
+
+// Pantau Aktivitas & Perilaku Hidup Sehat Harian
+export interface DailyHabitLog {
+  id: string;
+  userId: string;
+  date: string; // YYYY-MM-DD
+  physicalActivityMinutes: number; // Target 30 menit
+  stepCount: number; // Target misal 6000-10000 langkah
+  activityType: string; // "Jalan Cepat", "Senam Aerobik", "Bersepeda", "Jogging", dll
+  waterGlasses: number; // Target 8 gelas (2000 ml)
+  veggieFruitPortions: number; // Target 3-5 porsi
+  sleepHours: number; // Target 7-8 jam
+  lowSugarSaltFat: boolean; // Pembatasan konsumsi gula, garam, lemak tinggi
+  notes?: string;
+  habitScore: number; // 0 - 100%
+  createdAt: string;
+}
+
 export type MeasurementContext =
   | "Puasa Pagi"
   | "Sebelum Makan Siang"
@@ -43,12 +97,13 @@ export type MeasurementContext =
   | "Sebelum Tidur"
   | "Sewaktu / Acak";
 
+// Legacy compatibility for BloodSugarLog
 export interface BloodSugarLog {
   id: string;
   userId: string;
-  sugarLevel: number; // mg/dL
+  sugarLevel: number;
   measurementContext: MeasurementContext;
-  recordedAt: string; // ISO date string
+  recordedAt: string;
   notes?: string;
   symptoms?: string[];
   createdAt: string;
@@ -82,8 +137,8 @@ export interface DoctorReview {
   id: string;
   articleId: string;
   reviewerName: string;
-  reviewerTitle: string; // e.g. "dr. Sp.PD, KEMD (Spesialis Penyakit Dalam)"
-  strNumber: string; // Surat Tanda Registrasi
+  reviewerTitle: string;
+  strNumber: string;
   hospital: string;
   reviewNotes: string;
   approvalStatus: "Approved" | "Revision Needed" | "Pending Review";
@@ -99,7 +154,7 @@ export interface EducationalArticle {
   readingTimeMinutes: number;
   featuredImage: string;
   author: string;
-  sourceMedia?: string; // e.g. "kumparan.com"
+  sourceMedia?: string;
   sourceUrl?: string;
   createdAt: string;
   doctorReview: DoctorReview;

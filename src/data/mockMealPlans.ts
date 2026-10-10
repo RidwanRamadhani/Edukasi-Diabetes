@@ -5,14 +5,21 @@ export const initialProfile: UserProfile = {
   name: "Budi Pratama",
   email: "budi.pratama@example.com",
   gender: "Laki-laki",
-  age: 52,
-  diabetesType: "Diabetes Tipe 2",
-  currentWeight: 72,
-  height: 168,
-  targetSugarFasting: 100, // mg/dL
-  targetSugarPostPrandial: 140, // mg/dL
-  medicalHistory: "Terdiagnosis DM Tipe 2 sejak 2021. Riwayat hipertensi derajat 1 terkontrol. Tidak ada riwayat alergi obat.",
+  age: 42,
+  healthGoal: "Pencegahan Primer (Belum Kena DM)",
+  diabetesType: "Pencegahan Primer",
+  currentWeight: 68,
+  height: 170,
+  targetSugarFasting: 95,
+  targetSugarPostPrandial: 130,
+  medicalHistory: "Kondisi fisik sehat. Fokus pada pemantauan pola makan teratur, aktivitas fisik rutin, dan pencegahan faktor risiko diabetes melitus.",
   emergencyContact: "+62 812-3456-7890 (Ibu Dewi - Istri)",
+  latestRiskScore: 6,
+  latestRiskCategory: "Rendah",
+  latestRiskDate: "2026-10-05T10:00:00Z",
+  targetDailySteps: 7500,
+  targetDailyActivityMinutes: 30,
+  targetWaterGlasses: 8,
 };
 
 export const initialMealRecommendations: MealRecommendation[] = [

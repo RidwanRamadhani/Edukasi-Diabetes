@@ -25,18 +25,18 @@ import { useDiabetesStore } from "@/lib/storage";
 
 const patientNavItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Log Gula Darah", href: "/blood-sugar", icon: Activity },
+  { name: "Cek Risiko DM", href: "/risk-check", icon: ShieldCheck },
+  { name: "Pantau Aktivitas", href: "/activity-tracker", icon: Activity },
+  { name: "Edukasi Interaktif", href: "/education", icon: BookOpen },
   { name: "Kalkulator Glikemik", href: "/calculator", icon: Calculator },
-  { name: "Edukasi Terverifikasi", href: "/education", icon: BookOpen },
   { name: "Menu Sehat", href: "/meals", icon: CalendarDays },
-  { name: "Portal Review Medis", href: "/doctor-portal", icon: FileCheck2 },
-  { name: "Profil Medis", href: "/profile", icon: UserCheck },
+  { name: "Profil Saya", href: "/profile", icon: UserCheck },
 ];
 
 const doctorNavItems = [
   { name: "Dashboard Dokter", href: "/doctor-dashboard", icon: LayoutDashboard },
   { name: "Antrean Peer Review", href: "/doctor-dashboard", icon: FileCheck2 },
-  { name: "Monitoring Pasien", href: "/doctor-dashboard", icon: Users },
+  { name: "Monitoring Pengguna", href: "/doctor-dashboard", icon: Users },
   { name: "Edukasi Medis", href: "/education", icon: BookOpen },
 ];
 
@@ -83,14 +83,14 @@ export function Navbar() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-bold text-xl text-slate-900 tracking-tight">
-                  Dia<span className="text-emerald-600">Care</span>
+                  DIA<span className="text-emerald-600">SERA</span>
                 </span>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                  {isDoctorAuthenticated ? "Portal Dokter" : "Medis v1.0"}
+                  {isDoctorAuthenticated ? "Portal Dokter" : "Pencegahan & Pengendalian"}
                 </span>
               </div>
               <p className="text-[11px] text-slate-700 font-medium hidden sm:block">
-                Edukasi &amp; Manajemen Mandiri Diabetes
+                Edukasi Interaktif &amp; Pantau Hidup Sehat
               </p>
             </div>
           </Link>
@@ -184,7 +184,7 @@ export function Navbar() {
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-slate-800 leading-tight">{profile.name}</p>
-                    <p className="text-[10px] text-emerald-600 font-medium">{profile.diabetesType} • Terpantau</p>
+                    <p className="text-[10px] text-emerald-600 font-medium">{profile.healthGoal || "Pencegahan Primer"} • Terpantau</p>
                   </div>
                 </Link>
 
@@ -287,7 +287,7 @@ export function Navbar() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-800">{profile.name}</p>
-                    <p className="text-xs text-emerald-700">Pasien Terautentikasi ({profile.diabetesType})</p>
+                    <p className="text-xs text-emerald-700">{profile.healthGoal || "Pencegahan Primer"}</p>
                   </div>
                 </div>
                 <button

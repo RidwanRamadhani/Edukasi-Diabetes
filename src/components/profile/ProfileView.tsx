@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   CheckCircle2,
   HeartPulse,
@@ -12,8 +13,13 @@ import {
   Mail,
   Calendar,
   AlertCircle,
+  Activity,
+  Droplet,
+  Footprints,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
-import { UserProfile } from "@/types";
+import { UserProfile, HealthGoal } from "@/types";
 
 interface ProfileViewProps {
   profile: UserProfile;
@@ -28,19 +34,22 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
   const [gender, setGender] = useState<"Laki-laki" | "Perempuan">(
     profile.gender || "Laki-laki"
   );
-  const [diabetesType, setDiabetesType] = useState<
-    "Diabetes Tipe 1" | "Diabetes Tipe 2" | "Prediabetes" | "Gestasional"
-  >(profile.diabetesType || "Diabetes Tipe 2");
-  const [age, setAge] = useState<string>(String(profile.age || 45));
+  const [healthGoal, setHealthGoal] = useState<HealthGoal>(
+    profile.healthGoal || "Pencegahan Primer (Belum Kena DM)"
+  );
+  const [age, setAge] = useState<string>(String(profile.age || 35));
   const [currentWeight, setCurrentWeight] = useState<string>(
-    String(profile.currentWeight || 70)
+    String(profile.currentWeight || 65)
   );
   const [height, setHeight] = useState<string>(String(profile.height || 165));
-  const [targetSugarFasting, setTargetSugarFasting] = useState<string>(
-    String(profile.targetSugarFasting || 100)
+  const [targetSteps, setTargetSteps] = useState<string>(
+    String(profile.targetDailySteps || 7500)
   );
-  const [targetSugarPostPrandial, setTargetSugarPostPrandial] = useState<string>(
-    String(profile.targetSugarPostPrandial || 140)
+  const [targetActivityMinutes, setTargetActivityMinutes] = useState<string>(
+    String(profile.targetDailyActivityMinutes || 30)
+  );
+  const [targetWaterGlasses, setTargetWaterGlasses] = useState<string>(
+    String(profile.targetWaterGlasses || 8)
   );
   const [medicalHistory, setMedicalHistory] = useState(
     profile.medicalHistory || ""
@@ -59,12 +68,13 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
       setEmail(profile.email || "");
       setPhone(profile.phone || "");
       setGender(profile.gender || "Laki-laki");
-      setDiabetesType(profile.diabetesType || "Diabetes Tipe 2");
-      setAge(String(profile.age || 45));
-      setCurrentWeight(String(profile.currentWeight || 70));
+      setHealthGoal(profile.healthGoal || "Pencegahan Primer (Belum Kena DM)");
+      setAge(String(profile.age || 35));
+      setCurrentWeight(String(profile.currentWeight || 65));
       setHeight(String(profile.height || 165));
-      setTargetSugarFasting(String(profile.targetSugarFasting || 100));
-      setTargetSugarPostPrandial(String(profile.targetSugarPostPrandial || 140));
+      setTargetSteps(String(profile.targetDailySteps || 7500));
+      setTargetActivityMinutes(String(profile.targetDailyActivityMinutes || 30));
+      setTargetWaterGlasses(String(profile.targetWaterGlasses || 8));
       setMedicalHistory(profile.medicalHistory || "");
       setEmergencyContact(profile.emergencyContact || "");
     }
@@ -91,18 +101,23 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
 
   const getBmiCategory = (bmiValue: number) => {
     if (bmiValue < 18.5)
-      return { label: "Berat Kurang", color: "text-blue-600 bg-blue-50" };
+      return { label: "Berat Kurang", color: "text-blue-600 bg-blue-50 border-blue-200" };
     if (bmiValue <= 22.9)
       return {
-        label: "Berat Normal (Kriteria Asia)",
-        color: "text-emerald-700 bg-emerald-50",
+        label: "Berat Normal / Ideal",
+        color: "text-emerald-700 bg-emerald-50 border-emerald-200",
       };
     if (bmiValue <= 24.9)
       return {
-        label: "Kelebihan Berat Badan",
-        color: "text-amber-700 bg-amber-50",
+        label: "Batas Normal Atas",
+        color: "text-teal-700 bg-teal-50 border-teal-200",
       };
-    return { label: "Obesitas", color: "text-rose-700 bg-rose-50" };
+    if (bmiValue <= 29.9)
+      return {
+        label: "Kelebihan Berat Badan (Overweight)",
+        color: "text-amber-700 bg-amber-50 border-amber-200",
+      };
+    return { label: "Obesitas", color: "text-rose-700 bg-rose-50 border-rose-200" };
   };
 
   const bmiCat = getBmiCategory(bmi);
@@ -113,59 +128,40 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
     setSavedMsg("");
 
     if (!name.trim()) {
-      setErrorMsg("Nama lengkap tidak boleh kosong.");
+      setErrorMsg("Nama pengguna tidak boleh kosong.");
       return;
     }
 
-    if (!email.trim()) {
-      setErrorMsg("Email tidak boleh kosong.");
-      return;
-    }
-
-    const parsedAge = parseInt(age) || profile.age || 45;
-    const parsedWeight = parseFloat(currentWeight) || profile.currentWeight || 70;
-    const parsedHeight = parseFloat(height) || profile.height || 165;
-    const parsedFasting = parseInt(targetSugarFasting) || profile.targetSugarFasting || 100;
-    const parsedPostPrandial =
-      parseInt(targetSugarPostPrandial) || profile.targetSugarPostPrandial || 140;
-
-    const updated: UserProfile = {
+    const updatedProfile: UserProfile = {
       ...profile,
-      id: profile.id || `patient-${Date.now()}`,
       name: name.trim(),
-      email: email.trim().toLowerCase(),
-      phone: phone.trim(),
+      email: email.trim(),
+      phone: phone.trim() || undefined,
       gender,
-      diabetesType,
-      age: parsedAge,
-      currentWeight: parsedWeight,
-      height: parsedHeight,
-      targetSugarFasting: parsedFasting,
-      targetSugarPostPrandial: parsedPostPrandial,
+      healthGoal,
+      diabetesType: "Pencegahan Primer",
+      age: parseInt(age) || 35,
+      currentWeight: parseFloat(currentWeight) || 65,
+      height: parseFloat(height) || 165,
+      targetDailySteps: parseInt(targetSteps) || 7500,
+      targetDailyActivityMinutes: parseInt(targetActivityMinutes) || 30,
+      targetWaterGlasses: parseInt(targetWaterGlasses) || 8,
       medicalHistory: medicalHistory.trim(),
       emergencyContact: emergencyContact.trim(),
     };
 
-    onUpdateProfile(updated);
-
-    setSavedMsg(
-      `Profil pasien ${updated.name} berhasil disimpan dan otomatis terbarui di Dasbor Pemantauan Dokter!`
-    );
-    setTimeout(() => setSavedMsg(""), 5000);
+    onUpdateProfile(updatedProfile);
+    setSavedMsg("Profil DIASERA dan target hidup sehat Anda berhasil diperbarui!");
+    setTimeout(() => setSavedMsg(""), 4000);
   };
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Feedback Alerts */}
+      {/* Alert Notification */}
       {savedMsg && (
         <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold flex items-center gap-3 shadow-xs animate-in fade-in">
           <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-          <div className="flex-1">
-            <p className="font-bold">{savedMsg}</p>
-            <p className="text-[11px] text-emerald-700 mt-0.5 font-normal">
-              Semua parameter klinis, target gula darah, dan riwayat langsung disinkronkan secara real-time.
-            </p>
-          </div>
+          <span>{savedMsg}</span>
         </div>
       )}
 
@@ -184,9 +180,9 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-xl font-bold text-slate-900">{name || "Pasien DiaCare"}</h2>
+              <h2 className="text-xl font-bold text-slate-900">{name || "Pengguna DIASERA"}</h2>
               <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                {diabetesType}
+                {healthGoal}
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-1">
@@ -194,8 +190,8 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
               {phone ? ` • WA: ${phone}` : ""}
             </p>
             <div className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-[10px] text-teal-800 font-medium">
-              <Stethoscope className="w-3 h-3 text-teal-600" />
-              <span>Terhubung dengan Portal Dokter &amp; Rekam Medis Klinis</span>
+              <Sparkles className="w-3 h-3 text-teal-600" />
+              <span>DIASERA • Pencegahan &amp; Pemantauan Perilaku Hidup Sehat Mandiri</span>
             </div>
           </div>
         </div>
@@ -210,7 +206,7 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
             <span className="text-xs text-slate-500 font-semibold">kg/m²</span>
           </div>
           <span
-            className={`text-[10px] font-bold px-2 py-0.5 rounded-full inline-block mt-1 ${bmiCat.color}`}
+            className={`text-[10px] font-bold px-2 py-0.5 rounded-full border inline-block mt-1 ${bmiCat.color}`}
           >
             {bmiCat.label}
           </span>
@@ -225,21 +221,21 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
           <div>
             <h3 className="font-bold text-base text-slate-900">
-              Pengaturan Profil Pasien &amp; Parameter Klinis
+              Pengaturan Profil &amp; Target Perilaku Hidup Sehat
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Data yang Anda simpan di sini akan otomatis tampil dan diperbarui di dasbor dokter pemeriksa.
+              Sesuaikan target aktivitas fisik, asupan air, dan data antropometri untuk evaluasi pencegahan.
             </p>
           </div>
           <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 shrink-0">
-            Sinkronisasi Otomatis Aktif
+            Penyimpanan Aktif
           </span>
         </div>
 
         {/* 1. Data Identitas Pribadi */}
         <div>
           <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-            Identitas Pasien
+            Identitas Pengguna
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -252,7 +248,7 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Nama Lengkap Pasien"
+                  placeholder="Nama Lengkap"
                   className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
                   required
                 />
@@ -261,24 +257,22 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                Email Terdaftar <span className="text-rose-500">*</span>
+                Email
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="nama@email.com"
-                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
-                  required
+                  disabled
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-100 text-sm text-slate-500 cursor-not-allowed"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                Nomor WhatsApp / HP Pasien
+                Nomor WhatsApp
               </label>
               <div className="relative">
                 <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -286,13 +280,10 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Contoh: 081234567890"
+                  placeholder="081234567890"
                   className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
                 />
               </div>
-              <p className="text-[10px] text-slate-400 mt-1">
-                Digunakan oleh dokter untuk telekonsultasi WhatsApp langsung dari dasbor dokter.
-              </p>
             </div>
 
             <div>
@@ -313,25 +304,25 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                Klasifikasi Diabetes
+                Fokus Penggunaan DIASERA
               </label>
               <select
-                value={diabetesType}
-                onChange={(e) =>
-                  setDiabetesType(
-                    e.target.value as
-                      | "Diabetes Tipe 1"
-                      | "Diabetes Tipe 2"
-                      | "Prediabetes"
-                      | "Gestasional"
-                  )
-                }
+                value={healthGoal}
+                onChange={(e) => setHealthGoal(e.target.value as HealthGoal)}
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 cursor-pointer"
               >
-                <option value="Diabetes Tipe 2">Diabetes Tipe 2</option>
-                <option value="Diabetes Tipe 1">Diabetes Tipe 1</option>
-                <option value="Prediabetes">Prediabetes</option>
-                <option value="Gestasional">Diabetes Gestasional</option>
+                <option value="Pencegahan Primer (Belum Kena DM)">
+                  Pencegahan Primer (Belum Kena DM)
+                </option>
+                <option value="Deteksi Dini & Cek Risiko DM">
+                  Deteksi Dini &amp; Cek Risiko DM
+                </option>
+                <option value="Pemantauan Pola Hidup Sehat">
+                  Pemantauan Pola Hidup Sehat
+                </option>
+                <option value="Kelompok Waspada / Faktor Risiko Keluarga">
+                  Kelompok Waspada / Faktor Risiko Keluarga
+                </option>
               </select>
             </div>
 
@@ -347,7 +338,7 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
                   max="120"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
-                  placeholder="45"
+                  placeholder="35"
                   className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
                 />
               </div>
@@ -366,7 +357,7 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
                   max="300"
                   value={currentWeight}
                   onChange={(e) => setCurrentWeight(e.target.value)}
-                  placeholder="70"
+                  placeholder="65"
                   className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
                 />
               </div>
@@ -393,75 +384,83 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
           </div>
         </div>
 
-        {/* 2. Target Klinis Glukosa */}
+        {/* 2. Target Harian Pola Hidup Sehat */}
         <div className="pt-4 border-t border-slate-100">
           <h4 className="font-bold text-sm text-slate-900 mb-3 flex items-center gap-2">
-            <HeartPulse className="w-4 h-4 text-emerald-600" />
-            <span>Target Klinis Glukosa Darah Pribadi</span>
+            <Activity className="w-4 h-4 text-emerald-600" />
+            <span>Target Harian Perilaku Hidup Sehat Mandiri</span>
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                Batas Target Gula Darah Puasa (mg/dL)
+                Target Aktivitas Fisik (Menit/Hari)
               </label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
-                  min="50"
-                  max="300"
-                  value={targetSugarFasting}
-                  onChange={(e) => setTargetSugarFasting(e.target.value)}
+                  min="10"
+                  max="180"
+                  value={targetActivityMinutes}
+                  onChange={(e) => setTargetActivityMinutes(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                 />
-                <span className="text-xs text-slate-500 font-semibold shrink-0">
-                  mg/dL
-                </span>
+                <span className="text-xs text-slate-500 font-semibold shrink-0">Menit</span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-1.5">
-                Rekomendasi PERKENI: 80 - 130 mg/dL
-              </p>
+              <p className="text-[11px] text-slate-500 mt-1.5">Standar WHO: ≥ 30 menit / hari</p>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                Batas Target 2 Jam Pasca Makan (mg/dL)
+                Target Langkah Kaki (Steps/Hari)
               </label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
-                  min="50"
-                  max="400"
-                  value={targetSugarPostPrandial}
-                  onChange={(e) => setTargetSugarPostPrandial(e.target.value)}
+                  min="2000"
+                  max="30000"
+                  step="500"
+                  value={targetSteps}
+                  onChange={(e) => setTargetSteps(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                 />
-                <span className="text-xs text-slate-500 font-semibold shrink-0">
-                  mg/dL
-                </span>
+                <span className="text-xs text-slate-500 font-semibold shrink-0">Langkah</span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-1.5">
-                Rekomendasi PERKENI: &lt; 180 mg/dL (atau &lt; 140 mg/dL)
-              </p>
+              <p className="text-[11px] text-slate-500 mt-1.5">Target sehat: 7.000 - 10.000</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+              <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                Target Air Putih (Gelas/Hari)
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min="4"
+                  max="16"
+                  value={targetWaterGlasses}
+                  onChange={(e) => setTargetWaterGlasses(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                />
+                <span className="text-xs text-slate-500 font-semibold shrink-0">Gelas</span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-1.5">Standar hidrasi: 8 gelas (2.000 ml)</p>
             </div>
           </div>
         </div>
 
-        {/* 3. Riwayat Penyakit & Kontak Darurat */}
+        {/* 3. Riwayat Kesehatan & Kontak Darurat */}
         <div className="space-y-4 pt-2">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-              Riwayat Penyakit, Komplikasi &amp; Obat Saat Ini
+              Catatan Kesehatan Pribadi / Riwayat Keluarga
             </label>
             <textarea
               rows={3}
               value={medicalHistory}
               onChange={(e) => setMedicalHistory(e.target.value)}
-              placeholder="Contoh: DM Tipe 2 sejak 2021. Konsumsi Metformin 500mg 2x sehari. Tidak ada riwayat alergi obat."
+              placeholder="Contoh: Belum terdiagnosis diabetes. Orang tua memiliki riwayat DM tipe 2. Fokus pada pencegahan primer dan menjaga berat badan ideal."
               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
             />
-            <p className="text-[11px] text-slate-400 mt-1">
-              Catatan ini dapat dibaca oleh dokter spesialis pada modal rekam medis di dasbor dokter.
-            </p>
           </div>
 
           <div>
@@ -474,7 +473,7 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
                 type="text"
                 value={emergencyContact}
                 onChange={(e) => setEmergencyContact(e.target.value)}
-                placeholder="Contoh: +62 812-3456-7890 (Istri / Anak)"
+                placeholder="Contoh: +62 812-3456-7890 (Ibu Dewi - Istri)"
                 className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
               />
             </div>
@@ -484,12 +483,12 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
         {/* Save Button */}
         <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-[11px] text-slate-500 text-center sm:text-left">
-            Pastikan data yang dimasukkan benar sesuai kondisi pemeriksaan kesehatan terkini Anda.
+            Data tersimpan secara aman dan sinkron untuk pemantauan gaya hidup sehat mandiri.
           </p>
 
           <button
             type="submit"
-            className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer transition-all hover:scale-[1.01]"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 cursor-pointer transition-transform hover:scale-105"
           >
             <Save className="w-4 h-4" />
             <span>Simpan Perubahan Profil</span>

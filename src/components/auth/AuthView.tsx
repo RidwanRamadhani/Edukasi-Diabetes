@@ -25,6 +25,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useDiabetesStore } from "@/lib/storage";
+import { HealthGoal } from "@/types";
 
 export function AuthView() {
   const router = useRouter();
@@ -51,10 +52,10 @@ export function AuthView() {
   const [regPassword, setRegPassword] = useState("");
   const [regConfirmPassword, setRegConfirmPassword] = useState("");
   const [showRegPassword, setShowRegPassword] = useState(false);
-  const [regDiabetesType, setRegDiabetesType] = useState<
-    "Diabetes Tipe 2" | "Diabetes Tipe 1" | "Prediabetes" | "Gestasional"
-  >("Diabetes Tipe 2");
-  const [regAge, setRegAge] = useState<number>(45);
+  const [regHealthGoal, setRegHealthGoal] = useState<HealthGoal>(
+    "Pencegahan Primer (Belum Kena DM)"
+  );
+  const [regAge, setRegAge] = useState<number>(35);
   const [regGender, setRegGender] = useState<"Laki-laki" | "Perempuan">("Laki-laki");
   const [regPhone, setRegPhone] = useState("");
   const [agreeTerms, setAgreeTerms] = useState(true);
@@ -120,7 +121,8 @@ export function AuthView() {
         email: regEmail,
         phone: regPhone.trim() || undefined,
         password: regPassword,
-        diabetesType: regDiabetesType,
+        healthGoal: regHealthGoal,
+        diabetesType: "Pencegahan Primer",
         age: regAge,
         gender: regGender,
       });
@@ -207,10 +209,10 @@ export function AuthView() {
               <HeartPulse className="w-8 h-8 text-emerald-300 animate-pulse" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
-              Dia<span className="text-emerald-400">Care</span>
+              DIA<span className="text-emerald-400">SERA</span>
             </h1>
             <p className="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-sm mx-auto">
-              Portal Pasien: Manajemen Mandiri Diabetes &amp; Edukasi Berbasis Medis
+              Media Edukasi Interaktif &amp; Pemantauan Perilaku Hidup Sehat
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
@@ -439,17 +441,25 @@ export function AuthView() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Klasifikasi Diabetes <span className="text-rose-500">*</span>
+                    Fokus Penggunaan <span className="text-rose-500">*</span>
                   </label>
                   <select
-                    value={regDiabetesType}
-                    onChange={(e) => setRegDiabetesType(e.target.value as any)}
+                    value={regHealthGoal}
+                    onChange={(e) => setRegHealthGoal(e.target.value as any)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-800 bg-white font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
                   >
-                    <option value="Diabetes Tipe 2">Diabetes Tipe 2</option>
-                    <option value="Diabetes Tipe 1">Diabetes Tipe 1</option>
-                    <option value="Prediabetes">Prediabetes</option>
-                    <option value="Gestasional">Diabetes Gestasional</option>
+                    <option value="Pencegahan Primer (Belum Kena DM)">
+                      Pencegahan Primer (Belum Kena DM)
+                    </option>
+                    <option value="Deteksi Dini & Cek Risiko DM">
+                      Deteksi Dini &amp; Cek Risiko DM
+                    </option>
+                    <option value="Pemantauan Pola Hidup Sehat">
+                      Pemantauan Pola Hidup Sehat
+                    </option>
+                    <option value="Kelompok Waspada / Faktor Risiko Keluarga">
+                      Kelompok Waspada / Faktor Risiko Keluarga
+                    </option>
                   </select>
                 </div>
 

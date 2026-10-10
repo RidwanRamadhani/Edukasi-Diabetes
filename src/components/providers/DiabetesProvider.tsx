@@ -9,11 +9,15 @@ import {
   EducationalArticle,
   DoctorProfile,
   ClinicSchedule,
+  DailyHabitLog,
+  RiskAssessmentResult,
+  HealthGoal,
 } from "@/types";
 import { initialBloodSugarLogs } from "@/data/mockBloodSugarLogs";
 import { initialFoodDatabase } from "@/data/mockFoodDatabase";
 import { initialProfile } from "@/data/mockMealPlans";
 import { initialArticles } from "@/data/mockArticles";
+import { initialHabitLogs, initialRiskAssessments, calculateHabitScore } from "@/data/mockHabits";
 import {
   initialDoctors,
   initialMonitoredPatients,
@@ -28,16 +32,18 @@ import {
 } from "@/lib/supabase";
 
 const STORAGE_KEYS = {
-  LOGS: "diacare_blood_sugar_logs",
-  FOODS: "diacare_food_database",
-  CALCULATIONS: "diacare_calculations",
-  PROFILE: "diacare_user_profile",
-  ARTICLES: "diacare_educational_articles",
-  AUTH_SESSION: "diacare_auth_session",
-  REGISTERED_USERS: "diacare_registered_users",
-  DOCTOR_AUTH_SESSION: "diacare_doctor_auth_session",
-  ACTIVE_DOCTOR: "diacare_active_doctor",
-  MONITORED_PATIENTS: "diacare_monitored_patients",
+  LOGS: "diasera_blood_sugar_logs",
+  HABITS: "diasera_habit_logs",
+  RISK_ASSESSMENTS: "diasera_risk_assessments",
+  FOODS: "diasera_food_database",
+  CALCULATIONS: "diasera_calculations",
+  PROFILE: "diasera_user_profile",
+  ARTICLES: "diasera_educational_articles",
+  AUTH_SESSION: "diasera_auth_session",
+  REGISTERED_USERS: "diasera_registered_users",
+  DOCTOR_AUTH_SESSION: "diasera_doctor_auth_session",
+  ACTIVE_DOCTOR: "diasera_active_doctor",
+  MONITORED_PATIENTS: "diasera_monitored_patients",
 };
 
 export interface RegisteredAccount extends UserProfile {
@@ -54,6 +60,8 @@ const defaultRegisteredUsers: RegisteredAccount[] = [
 interface DiabetesContextType {
   // Patient state
   logs: BloodSugarLog[];
+  habitLogs: DailyHabitLog[];
+  riskAssessments: RiskAssessmentResult[];
   foods: FoodItem[];
   calculations: CalculationHistory[];
   profile: UserProfile;
@@ -66,7 +74,8 @@ interface DiabetesContextType {
     name: string;
     email: string;
     password: string;
-    diabetesType: UserProfile["diabetesType"];
+    healthGoal?: HealthGoal;
+    diabetesType?: string;
     age?: number;
     gender?: "Laki-laki" | "Perempuan";
     phone?: string;
@@ -75,6 +84,9 @@ interface DiabetesContextType {
   }) => Promise<{ success: boolean; message: string }>;
   logout: () => void;
   isCloudDbConnected: boolean;
+  addHabitLog: (newHabit: Omit<DailyHabitLog, "id" | "createdAt">) => DailyHabitLog;
+  updateHabitLog: (id: string, updates: Partial<DailyHabitLog>) => void;
+  addRiskAssessment: (newAssessment: Omit<RiskAssessmentResult, "id" | "assessedAt">) => RiskAssessmentResult;
   addBloodSugarLog: (newLog: Omit<BloodSugarLog, "id" | "createdAt">) => BloodSugarLog;
   deleteBloodSugarLog: (id: string) => void;
   addCalculation: (calc: Omit<CalculationHistory, "id" | "createdAt">) => CalculationHistory;
@@ -103,6 +115,8 @@ const DiabetesContext = createContext<DiabetesContextType | null>(null);
 export function DiabetesProvider({ children }: { children: React.ReactNode }) {
   // Patient state
   const [logs, setLogs] = useState<BloodSugarLog[]>(initialBloodSugarLogs);
+  const [habitLogs, setHabitLogs] = useState<DailyHabitLog[]>(initialHabitLogs);
+  const [riskAssessments, setRiskAssessments] = useState<RiskAssessmentResult[]>(initialRiskAssessments);
   const [foods, setFoods] = useState<FoodItem[]>(initialFoodDatabase);
   const [calculations, setCalculations] = useState<CalculationHistory[]>([]);
   const [profile, setProfile] = useState<UserProfile>(initialProfile);
@@ -194,6 +208,21 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       try {
         localStorage.setItem(STORAGE_KEYS.MONITORED_PATIENTS, JSON.stringify(patientsList));
       } catch {}
+
+      // 5b. Habits logs & Risk assessments
+      const storedHabits = localStorage.getItem(STORAGE_KEYS.HABITS);
+      if (storedHabits) {
+        try {
+          setHabitLogs(JSON.parse(storedHabits));
+        } catch {}
+      }
+
+      const storedRisks = localStorage.getItem(STORAGE_KEYS.RISK_ASSESSMENTS);
+      if (storedRisks) {
+        try {
+          setRiskAssessments(JSON.parse(storedRisks));
+        } catch {}
+      }
 
       // 6. Blood sugar logs
       const storedLogs = localStorage.getItem(STORAGE_KEYS.LOGS);
@@ -313,7 +342,8 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
     name: string;
     email: string;
     password: string;
-    diabetesType: UserProfile["diabetesType"];
+    healthGoal?: HealthGoal;
+    diabetesType?: string;
     age?: number;
     gender?: "Laki-laki" | "Perempuan";
     phone?: string;
@@ -332,25 +362,34 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       };
     }
 
+    const healthGoal: HealthGoal =
+      userData.healthGoal || "Pencegahan Primer (Belum Kena DM)";
     const newAccount: RegisteredAccount = {
       id: `patient-${Date.now()}`,
       name: userData.name.trim(),
       email: cleanEmail,
       phone: userData.phone?.trim() || undefined,
       password: userData.password,
-      diabetesType: userData.diabetesType,
-      age: userData.age || 45,
+      healthGoal,
+      diabetesType: userData.diabetesType || "Pencegahan Primer",
+      age: userData.age || 35,
       gender: userData.gender || "Laki-laki",
-      currentWeight: userData.currentWeight || 68,
+      currentWeight: userData.currentWeight || 65,
       height: userData.height || 165,
-      targetSugarFasting: 100,
-      targetSugarPostPrandial: 140,
-      medicalHistory: `Pasien terdaftar baru (${userData.diabetesType}). Rekam medis awal dibuka.`,
+      targetSugarFasting: 95,
+      targetSugarPostPrandial: 130,
+      medicalHistory: `Pengguna DIASERA (${healthGoal}). Program pemantauan gaya hidup sehat mandiri.`,
       emergencyContact: userData.phone ? `WhatsApp: ${userData.phone}` : "-",
-      lastBloodSugarLevel: 100,
+      lastBloodSugarLevel: 95,
       lastBloodSugarContext: "Puasa Pagi",
       lastCheckDate: new Date().toISOString(),
       riskStatus: "Terkontrol",
+      latestRiskScore: 0,
+      latestRiskCategory: "Rendah",
+      latestRiskDate: new Date().toISOString(),
+      targetDailySteps: 7500,
+      targetDailyActivityMinutes: 30,
+      targetWaterGlasses: 8,
     };
 
     const updatedUsers = [...registeredUsers, newAccount];
@@ -666,10 +705,81 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   };
 
+  const addHabitLog = (newHabit: Omit<DailyHabitLog, "id" | "createdAt">): DailyHabitLog => {
+    const habitScore = calculateHabitScore(newHabit);
+    const created: DailyHabitLog = {
+      ...newHabit,
+      id: `habit-${Date.now()}`,
+      habitScore,
+      createdAt: new Date().toISOString(),
+    };
+    const existingIndex = habitLogs.findIndex((h) => h.date === newHabit.date);
+    let updated: DailyHabitLog[];
+    if (existingIndex >= 0) {
+      updated = [...habitLogs];
+      updated[existingIndex] = created;
+    } else {
+      updated = [created, ...habitLogs];
+    }
+    setHabitLogs(updated);
+    try {
+      localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(updated));
+    } catch {}
+    return created;
+  };
+
+  const updateHabitLog = (id: string, updates: Partial<DailyHabitLog>) => {
+    const updated = habitLogs.map((h) => {
+      if (h.id === id) {
+        const merged = { ...h, ...updates };
+        const score = calculateHabitScore(merged);
+        return { ...merged, habitScore: score };
+      }
+      return h;
+    });
+    setHabitLogs(updated);
+    try {
+      localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(updated));
+    } catch {}
+  };
+
+  const addRiskAssessment = (
+    newAssessment: Omit<RiskAssessmentResult, "id" | "assessedAt">
+  ): RiskAssessmentResult => {
+    const created: RiskAssessmentResult = {
+      ...newAssessment,
+      id: `risk-${Date.now()}`,
+      assessedAt: new Date().toISOString(),
+    };
+    const updated = [created, ...riskAssessments];
+    setRiskAssessments(updated);
+
+    const updatedProfile: UserProfile = {
+      ...profile,
+      latestRiskScore: created.totalScore,
+      latestRiskCategory: created.riskCategory,
+      latestRiskDate: created.assessedAt,
+      riskStatus: created.riskCategory === "Rendah" ? "Terkontrol" : created.riskCategory === "Sedang" ? "Waspada" : "Tinggi",
+    };
+    setProfile(updatedProfile);
+
+    try {
+      localStorage.setItem(STORAGE_KEYS.RISK_ASSESSMENTS, JSON.stringify(updated));
+      localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(updatedProfile));
+    } catch {}
+
+    if (isSupabaseConfigured()) {
+      syncPatientToSupabase(updatedProfile).catch(() => {});
+    }
+    return created;
+  };
+
   return (
     <DiabetesContext.Provider
       value={{
         logs,
+        habitLogs,
+        riskAssessments,
         foods,
         calculations,
         profile,
@@ -681,6 +791,9 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
         register,
         logout,
         isCloudDbConnected: isSupabaseConfigured(),
+        addHabitLog,
+        updateHabitLog,
+        addRiskAssessment,
         addBloodSugarLog,
         deleteBloodSugarLog,
         addCalculation,
