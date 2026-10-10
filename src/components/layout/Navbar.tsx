@@ -25,9 +25,9 @@ import { useDiabetesStore } from "@/lib/storage";
 
 const patientNavItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Cek Risiko DM", href: "/risk-check", icon: ShieldCheck },
-  { name: "Pantau Aktivitas", href: "/activity-tracker", icon: Activity },
   { name: "Edukasi Interaktif", href: "/education", icon: BookOpen },
+  { name: "Pantau Aktivitas", href: "/activity-tracker", icon: Activity },
+  { name: "Cek Risiko DM", href: "/risk-check", icon: ShieldCheck },
   { name: "Kalkulator Glikemik", href: "/calculator", icon: Calculator },
   { name: "Menu Sehat", href: "/meals", icon: CalendarDays },
   { name: "Profil Saya", href: "/profile", icon: UserCheck },
