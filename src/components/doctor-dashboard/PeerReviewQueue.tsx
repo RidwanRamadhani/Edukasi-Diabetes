@@ -65,7 +65,7 @@ export function PeerReviewQueue({
 
     const noteToSave =
       clinicalNotes.trim() ||
-      `Diverifikasi dan disetujui sesuai Konsensus Pengelolaan Diabetes Melitus PERKENI 2023 oleh ${doctor.name}.`;
+      `Diverifikasi dan disetujui sesuai Panduan Klinis Edukasi Pencegahan & Pengendalian Diabetes Melitus DIASERA oleh ${doctor.name}.`;
 
     onUpdateReviewStatus(reviewingArticle.id, decision, noteToSave, doctor.name);
 
@@ -88,7 +88,7 @@ export function PeerReviewQueue({
             </h2>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Daftar artikel kesehatan dari penulis &amp; ahli gizi yang menunggu validasi klinis dokter ({filteredArticles.length} naskah)
+            Daftar artikel kesehatan dan edukasi pencegahan diabetes yang menunggu validasi klinis dokter ({filteredArticles.length} naskah)
           </p>
         </div>
 
@@ -281,11 +281,11 @@ export function PeerReviewQueue({
                   rows={4}
                   value={clinicalNotes}
                   onChange={(e) => setClinicalNotes(e.target.value)}
-                  placeholder="Ketik catatan evaluasi klinis Anda di sini (misal: Sesuai pedoman PERKENI 2023, edukasi porsi karbohidrat sudah tepat)..."
+                  placeholder="Ketik catatan evaluasi klinis Anda di sini (misal: Sesuai panduan pencegahan DIASERA, edukasi aktivitas fisik dan nutrisi seimbang sudah tepat dan ilmiah)..."
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
                 />
                 <p className="text-[10px] text-slate-500 mt-1">
-                  Catatan ini akan tampil sebagai kutipan dokter resmi di atas artikel bagi seluruh pasien pembaca.
+                  Catatan ini akan tampil sebagai kutipan dokter resmi terverifikasi di atas artikel bagi seluruh pembaca DIASERA.
                 </p>
               </div>
 

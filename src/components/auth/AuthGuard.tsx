@@ -16,7 +16,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center gap-3">
         <HeartPulse className="w-10 h-10 text-emerald-600 animate-pulse" />
-        <p className="text-xs text-slate-500 font-medium">Memuat sistem autentikasi DiaCare...</p>
+        <p className="text-xs text-slate-500 font-medium">Memuat sistem autentikasi DIASERA...</p>
       </div>
     );
   }
@@ -50,7 +50,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     return <>{children}</>;
   }
 
-  // 2. Guard for Patient Pages (/dashboard, /blood-sugar, /calculator, etc.)
+  // 2. Guard for Patient Pages (/dashboard, /risk-check, /activity-tracker, etc.)
   if (!isAuthenticated && !isDoctorAuthenticated) {
     return (
       <div className="py-2 space-y-4 animate-in fade-in duration-300">
@@ -59,10 +59,9 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
             <Lock className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-bold text-slate-900 text-sm">Akses Rekam Medis Terproteksi</p>
+            <p className="font-bold text-slate-900 text-sm">Akses Fitur Terproteksi</p>
             <p className="text-[11px] text-amber-800 leading-relaxed">
-              Sesuai PRD Fase 1 (Autentikasi &amp; Perlindungan Data Pasien), Anda harus masuk ke akun
-              pasien terlebih dahulu atau mendaftar akun baru untuk mengakses seluruh menu aplikasi.
+              Anda harus masuk ke akun pengguna terlebih dahulu atau mendaftar akun baru untuk mengakses seluruh menu DIASERA.
             </p>
           </div>
         </div>

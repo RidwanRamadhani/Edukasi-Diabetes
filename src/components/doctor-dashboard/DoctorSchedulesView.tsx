@@ -22,7 +22,7 @@ export function DoctorSchedulesView({ schedules, doctor }: DoctorSchedulesViewPr
             </h2>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Manajemen alokasi waktu pelayanan poli rumah sakit dan sesi konsultasi WhatsApp DiaCare
+            Manajemen alokasi waktu pelayanan poli rumah sakit dan sesi telekonsultasi WhatsApp DIASERA
           </p>
         </div>
 
@@ -79,7 +79,7 @@ export function DoctorSchedulesView({ schedules, doctor }: DoctorSchedulesViewPr
                 </div>
                 <div className="flex items-center gap-2 pt-1 font-semibold text-slate-800">
                   <Users className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                  <span>Kapasitas Pasien: {sch.quota}</span>
+                  <span>Kapasitas Sesi: {sch.quota} Pengguna</span>
                 </div>
               </div>
             </div>

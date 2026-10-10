@@ -69,7 +69,7 @@ export default function DoctorDashboardPage() {
             }`}
           >
             <Users className="w-4 h-4 text-cyan-600" />
-            <span>Manajemen Pasien</span>
+            <span>Pemantauan Pengguna</span>
             <span className="text-[10px] bg-cyan-100 text-cyan-800 px-1.5 py-0.2 rounded-full">
               {monitoredPatients.length}
             </span>

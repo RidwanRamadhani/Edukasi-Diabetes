@@ -144,7 +144,7 @@ export function ArticleModal({ article, onClose }: ArticleModalProps) {
         <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
           <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
             <Globe className="w-3.5 h-3.5 text-blue-600" />
-            <span>Materi Asli Kumparan Terverifikasi oleh Tim Dokter DiaCare</span>
+            <span>Materi Asli Kumparan Terverifikasi oleh Tim Dokter DIASERA</span>
           </div>
           <button
             onClick={onClose}

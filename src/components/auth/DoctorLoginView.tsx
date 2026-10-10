@@ -25,7 +25,7 @@ export function DoctorLoginView() {
   const router = useRouter();
   const { doctorLogin, isDoctorAuthenticated, activeDoctor, doctorLogout } = useDiabetesStore();
 
-  const [identifier, setIdentifier] = useState("dr.ridwan@diacare.med");
+  const [identifier, setIdentifier] = useState("dr.ridwan@diasera.med");
   const [password, setPassword] = useState("doctor123");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -116,10 +116,10 @@ export function DoctorLoginView() {
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-              Dia<span className="text-teal-400">Care</span> Medical Portal
+              DIA<span className="text-teal-400">SERA</span> Medical Portal
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-md mx-auto leading-relaxed">
-              Autentikasi verifikasi klinis, antrean peer-review artikel edukasi, dan pemantauan gula darah pasien
+              Autentikasi verifikasi klinis, antrean peer-review artikel edukasi, dan pemantauan pencegahan diabetes pengguna
             </p>
           </div>
         </div>
@@ -134,7 +134,7 @@ export function DoctorLoginView() {
             href="/auth"
             className="text-xs text-emerald-700 hover:text-emerald-800 font-bold hover:underline"
           >
-            Portal Pasien &rarr;
+            Portal Pengguna &rarr;
           </Link>
         </div>
 
@@ -165,7 +165,7 @@ export function DoctorLoginView() {
                   type="text"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  placeholder="Contoh: dr.ridwan@diacare.med atau STR-3171-8842-2024"
+                  placeholder="Contoh: dr.ridwan@diasera.med atau STR-3171-8842-2024"
                   required
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
                 />
@@ -205,20 +205,20 @@ export function DoctorLoginView() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={() => fillDoctorDemo("dr.ridwan@diacare.med")}
+                  onClick={() => fillDoctorDemo("dr.ridwan@diasera.med")}
                   className="text-left p-2.5 rounded-xl bg-white border border-teal-200/80 hover:bg-teal-50 text-xs transition-colors cursor-pointer"
                 >
                   <p className="font-bold text-teal-900">dr. Ridwan Ramadhani, Sp.PD</p>
-                  <p className="text-[10px] text-slate-500 font-mono">dr.ridwan@diacare.med</p>
+                  <p className="text-[10px] text-slate-500 font-mono">dr.ridwan@diasera.med</p>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => fillDoctorDemo("dr.handoko@diacare.med")}
+                  onClick={() => fillDoctorDemo("dr.handoko@diasera.med")}
                   className="text-left p-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-xs transition-colors cursor-pointer"
                 >
                   <p className="font-bold text-slate-800">dr. Handoko Santoso, Sp.PD</p>
-                  <p className="text-[10px] text-slate-500 font-mono">dr.handoko@diacare.med</p>
+                  <p className="text-[10px] text-slate-500 font-mono">dr.handoko@diasera.med</p>
                 </button>
               </div>
             </div>
@@ -237,7 +237,7 @@ export function DoctorLoginView() {
             <p className="text-xs text-slate-500">
               Bukan tenaga medis?{" "}
               <Link href="/auth" className="text-emerald-700 font-bold hover:underline">
-                Masuk sebagai Pasien Diabetes
+                Masuk sebagai Pengguna DIASERA
               </Link>
             </p>
           </div>

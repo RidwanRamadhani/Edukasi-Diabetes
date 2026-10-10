@@ -264,7 +264,7 @@ export function DoctorReviewPanel({ articles, onUpdateReviewStatus }: DoctorRevi
                         Output Sertifikasi Medis (Tampilan di Sisi Pasien)
                       </h4>
                       <p className="text-[11px] text-slate-500">
-                        Inilah tampilan yang dibaca pasien pada modul edukasi DiaCare
+                        Inilah tampilan yang dibaca pengguna pada modul edukasi DIASERA
                       </p>
                     </div>
                   </div>

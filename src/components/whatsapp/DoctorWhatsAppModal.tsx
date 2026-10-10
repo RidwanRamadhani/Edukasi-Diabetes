@@ -35,12 +35,12 @@ export function DoctorWhatsAppModal({ isOpen, onClose }: DoctorWhatsAppModalProp
 
   const latestLog = logs[0];
 
-  const [patientName, setPatientName] = useState(profile.name || "Pasien DiaCare");
+  const [patientName, setPatientName] = useState(profile.name || "Pengguna DIASERA");
   const [complaint, setComplaint] = useState("");
-  const [bloodSugarContext, setBloodSugarContext] = useState(
-    latestLog
-      ? `${latestLog.sugarLevel} mg/dL (${latestLog.measurementContext})`
-      : "Belum mencatat gula darah terbaru"
+  const [screeningContext, setScreeningContext] = useState(
+    profile.latestRiskCategory
+      ? `Skor ${profile.latestRiskScore ?? 0} (Risiko ${profile.latestRiskCategory})`
+      : "Belum melakukan skrining FINDRISC"
   );
 
   if (!isOpen) return null;
@@ -48,15 +48,15 @@ export function DoctorWhatsAppModal({ isOpen, onClose }: DoctorWhatsAppModalProp
   const handleSendWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formattedMessage = `Halo ${DOCTOR_WHATSAPP_CONFIG.name}, saya pasien dari aplikasi DiaCare ingin berkonsultasi mengenai kondisi diabetes saya.
+    const formattedMessage = `Halo ${DOCTOR_WHATSAPP_CONFIG.name}, saya pengguna dari aplikasi DIASERA ingin berkonsultasi mengenai pencegahan dan pengelolaan risiko diabetes saya.
 
-📋 *DATA PASIEN:*
+📋 *DATA PENGGUNA DIASERA:*
 • Nama: ${patientName.trim()}
-• Klasifikasi: ${profile.diabetesType} (${profile.age || 45} tahun)
-• Gula Darah Terkini: ${bloodSugarContext}
+• Fokus Kesehatan: ${profile.healthGoal || profile.diabetesType || "Pencegahan Primer"} (${profile.age || 45} tahun)
+• Skrining FINDRISC: ${screeningContext}
 
-💬 *KELUHAN / PERTANYAAN:*
-${complaint.trim() || "Saya ingin berkonsultasi mengenai evaluasi kadar gula darah dan pola makan harian saya."}
+💬 *PERTANYAAN / KONSULTASI:*
+${complaint.trim() || "Saya ingin berkonsultasi mengenai hasil evaluasi skrining risiko diabetes dan rekomendasi pola hidup sehat harian saya."}
 
 Mohon arahan dan petunjuk medis dari dokter. Terima kasih.`;
 
@@ -116,7 +116,7 @@ Mohon arahan dan petunjuk medis dari dokter. Terima kasih.`;
         <form onSubmit={handleSendWhatsApp} className="p-6 space-y-4">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Nama Pasien <span className="text-rose-500">*</span>
+              Nama Pengguna <span className="text-rose-500">*</span>
             </label>
             <div className="relative">
               <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -133,26 +133,26 @@ Mohon arahan dan petunjuk medis dari dokter. Terima kasih.`;
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Klasifikasi Diabetes
+                Fokus Kesehatan DIASERA
               </label>
               <input
                 type="text"
                 disabled
-                value={profile.diabetesType}
+                value={profile.healthGoal || profile.diabetesType || "Pencegahan Primer"}
                 className="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50 text-slate-600 font-medium cursor-not-allowed"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Gula Darah Terkini
+                Skrining FINDRISC
               </label>
               <div className="relative">
                 <Activity className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-emerald-600" />
                 <input
                   type="text"
-                  value={bloodSugarContext}
-                  onChange={(e) => setBloodSugarContext(e.target.value)}
+                  value={screeningContext}
+                  onChange={(e) => setScreeningContext(e.target.value)}
                   className="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-slate-300 text-slate-800 font-medium"
                 />
               </div>
@@ -161,19 +161,19 @@ Mohon arahan dan petunjuk medis dari dokter. Terima kasih.`;
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-              Keluhan Penyakit / Pertanyaan yang Ingin Ditanyakan{" "}
+              Pertanyaan / Konsultasi yang Ingin Ditanyakan{" "}
               <span className="text-rose-500">*</span>
             </label>
             <textarea
               rows={3}
               value={complaint}
               onChange={(e) => setComplaint(e.target.value)}
-              placeholder="Contoh: Dok, akhir-akhir ini gula darah puasa saya mencapai 160 mg/dL dan sering merasa kesemutan di ujung telapak kaki. Apakah dosis obat saya perlu disesuaikan?"
+              placeholder="Contoh: Dok, hasil cek risiko saya menunjukkan kategori sedang. Rekomendasi aktivitas fisik dan pola makan apa yang paling efektif untuk pencegahan?"
               required
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-900 placeholder:text-slate-400"
+              className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-900 placeholder:text-slate-400"
             />
             <p className="text-[10px] text-slate-500 mt-1">
-              Pesan akan otomatis dirapikan dengan format rekam medis sebelum dikirim ke chat WhatsApp dokter.
+              Pesan akan otomatis dirapikan dengan data skrining sebelum dikirim ke chat WhatsApp dokter.
             </p>
           </div>
 

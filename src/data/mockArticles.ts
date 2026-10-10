@@ -292,7 +292,7 @@ Diabetes Melitus adalah kelainan metabolik kronis yang ditandai dengan kadar glu
       reviewerTitle: "Dokter Spesialis Penyakit Dalam - Konsultan Endokrin, Metabolik & Diabetes",
       strNumber: "STR-3171-8892-2024",
       hospital: "RS Pusat Jantung dan Endokrin Nasional",
-      reviewNotes: "Edukasi prediabetes yang reversibel adalah poin utama yang harus disebarluaskan. Sangat disetujui untuk dipublikasikan kepada pembaca DiaCare.",
+      reviewNotes: "Edukasi prediabetes yang reversibel adalah poin utama yang harus disebarluaskan. Sangat disetujui untuk dipublikasikan kepada pembaca DIASERA.",
       approvalStatus: "Approved",
       reviewedAt: "2024-04-06T10:00:00Z",
     },

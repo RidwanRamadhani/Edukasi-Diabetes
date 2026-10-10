@@ -122,11 +122,11 @@ export function DoctorDashboardHeader({
           </p>
         </div>
 
-        {/* Card 3: Pasien Terpantau */}
+        {/* Card 3: Pengguna Terpantau */}
         <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-              Pasien Terpantau
+              Pengguna Terpantau
             </span>
             <div className="w-9 h-9 rounded-xl bg-cyan-50 text-cyan-700 flex items-center justify-center">
               <Users className="w-5 h-5" />
@@ -136,18 +136,18 @@ export function DoctorDashboardHeader({
             <span className="text-3xl font-extrabold text-slate-900 tracking-tight">
               {patients.length}
             </span>
-            <span className="text-xs font-semibold text-slate-500">pasien aktif</span>
+            <span className="text-xs font-semibold text-slate-500">pengguna aktif</span>
           </div>
           <p className="text-[11px] text-cyan-700 font-medium mt-2">
-            Rekam medis terhubung real-time
+            Pemantauan gaya hidup &amp; risiko DIASERA
           </p>
         </div>
 
-        {/* Card 4: Pasien Perhatian Khusus */}
+        {/* Card 4: Pengguna Perhatian Khusus / Risiko FINDRISC */}
         <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-              Glukosa Waspada / Tinggi
+              Risiko FINDRISC Waspada
             </span>
             <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center">
               <Activity className="w-5 h-5" />
@@ -157,10 +157,10 @@ export function DoctorDashboardHeader({
             <span className="text-3xl font-extrabold text-slate-900 tracking-tight">
               {highRiskPatientsCount}
             </span>
-            <span className="text-xs font-semibold text-slate-500">pasien perhatian</span>
+            <span className="text-xs font-semibold text-slate-500">pengguna perhatian</span>
           </div>
           <p className="text-[11px] text-rose-700 font-medium mt-2">
-            Perlu penyesuaian dosis / edukasi diet
+            Perlu intervensi pencegahan &amp; gaya hidup
           </p>
         </div>
       </div>

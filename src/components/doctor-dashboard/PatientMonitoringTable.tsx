@@ -99,11 +99,11 @@ export function PatientMonitoringTable({
               <Users className="w-4 h-4" />
             </div>
             <h2 className="text-base sm:text-lg font-bold text-slate-900">
-              Manajemen &amp; Pemantauan Pasien Diabetes
+              Manajemen &amp; Pemantauan Pengguna DIASERA
             </h2>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
-            Daftar pasien aktif terpantau dengan metrik gula darah &amp; status risiko klinis ({filteredPatients.length} pasien)
+            Daftar pengguna terpantau dengan metrik risiko FINDRISC &amp; evaluasi perilaku hidup sehat ({filteredPatients.length} pengguna)
           </p>
         </div>
 
@@ -117,9 +117,9 @@ export function PatientMonitoringTable({
               className="bg-transparent font-semibold text-slate-700 focus:outline-none cursor-pointer"
             >
               <option value="ALL">Semua Risiko</option>
-              <option value="Terkontrol">Terkontrol</option>
-              <option value="Waspada">Waspada</option>
-              <option value="Tinggi">Tinggi</option>
+              <option value="Terkontrol">Risiko Rendah</option>
+              <option value="Waspada">Risiko Sedang</option>
+              <option value="Tinggi">Risiko Tinggi</option>
             </select>
           </div>
 
@@ -129,7 +129,7 @@ export function PatientMonitoringTable({
               type="text"
               value={searchPatient}
               onChange={(e) => setSearchPatient(e.target.value)}
-              placeholder="Cari nama pasien..."
+              placeholder="Cari nama pengguna..."
               className="text-xs pl-8 pr-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-1 focus:ring-cyan-500 text-slate-800 w-44 sm:w-56"
             />
           </div>
@@ -214,9 +214,9 @@ export function PatientMonitoringTable({
                       <button
                         onClick={() => setSelectedPatient(patient)}
                         className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-cyan-50 hover:text-cyan-800 text-slate-700 text-xs font-bold transition-colors cursor-pointer"
-                        title="Buka Rekam Medis Pasien"
+                        title="Buka Profil & Evaluasi Pengguna"
                       >
-                        Rekam Medis
+                        Profil &amp; Evaluasi
                       </button>
 
                       {(() => {
@@ -226,7 +226,7 @@ export function PatientMonitoringTable({
 
                         if (cleanPhone) {
                           const waUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(
-                            `Halo ${patient.name}, saya ${doctor.name} dari DiaCare ingin menindaklanjuti hasil pemantauan kadar gula darah Anda.`
+                            `Halo ${patient.name}, saya ${doctor.name} dari DIASERA ingin menindaklanjuti hasil evaluasi risiko diabetes dan gaya hidup sehat Anda.`
                           )}`;
 
                           return (
@@ -247,7 +247,7 @@ export function PatientMonitoringTable({
                             type="button"
                             onClick={() => setSelectedPatient(patient)}
                             className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-400 border border-slate-200 transition-colors cursor-pointer"
-                            title="Nomor WhatsApp belum terdaftar di profil pasien"
+                            title="Nomor WhatsApp belum terdaftar di profil pengguna"
                           >
                             <MessageCircle className="w-4 h-4" />
                           </button>
@@ -262,7 +262,7 @@ export function PatientMonitoringTable({
         </table>
       </div>
 
-      {/* MODAL DETAIL REKAM MEDIS PASIEN */}
+      {/* MODAL DETAIL REKAM MEDIS & EVALUASI PENGGUNA */}
       {selectedPatient && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto animate-in fade-in">
           <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in zoom-in-95">
@@ -287,11 +287,11 @@ export function PatientMonitoringTable({
                         selectedPatient.riskStatus
                       )}`}
                     >
-                      {selectedPatient.riskStatus}
+                      {selectedPatient.latestRiskCategory ? `FINDRISC: ${selectedPatient.latestRiskCategory}` : (selectedPatient.riskStatus || "Rendah")}
                     </span>
                   </div>
                   <p className="text-xs text-slate-500 mt-0.5">
-                    {selectedPatient.email} • {selectedPatient.diabetesType} • {selectedPatient.age} Tahun ({selectedPatient.gender})
+                    {selectedPatient.email} • {selectedPatient.healthGoal || selectedPatient.diabetesType || "Pencegahan Primer"} • {selectedPatient.age} Tahun ({selectedPatient.gender})
                   </p>
                 </div>
               </div>
@@ -327,12 +327,12 @@ export function PatientMonitoringTable({
                       </div>
                       <div>
                         <p className="text-xs font-bold text-emerald-950">
-                          Telekonsultasi WhatsApp Pasien
+                          Telekonsultasi WhatsApp DIASERA
                         </p>
                         <p className="text-[11px] text-emerald-800">
                           {modalCleanPhone
                             ? `Nomor Terverifikasi: +${modalCleanPhone} (${selectedPatient.name})`
-                            : "Nomor WhatsApp belum terdaftar di profil pasien"}
+                            : "Nomor WhatsApp belum terdaftar di profil pengguna"}
                         </p>
                       </div>
                     </div>
@@ -340,7 +340,7 @@ export function PatientMonitoringTable({
                     {modalCleanPhone ? (
                       <a
                         href={`https://api.whatsapp.com/send?phone=${modalCleanPhone}&text=${encodeURIComponent(
-                          `Halo ${selectedPatient.name}, saya ${doctor.name} dari DiaCare ingin menindaklanjuti hasil pemantauan kadar gula darah dan rekam medis Anda.`
+                          `Halo ${selectedPatient.name}, saya ${doctor.name} dari DIASERA ingin mendiskusikan hasil evaluasi skrining risiko diabetes dan rekomendasi gaya hidup sehat Anda.`
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -359,24 +359,24 @@ export function PatientMonitoringTable({
                 );
               })()}
 
-              {/* Parameter Klinis & Target Pasien */}
+              {/* Parameter Evaluasi DIASERA & Skrining FINDRISC */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">Gula Terkini</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Skor FINDRISC</span>
                   <p className="text-lg font-black text-slate-900 mt-1">
-                    {selectedPatient.lastBloodSugarLevel || "--"} <span className="text-xs font-normal">mg/dL</span>
+                    {selectedPatient.latestRiskScore !== undefined ? selectedPatient.latestRiskScore : 0} <span className="text-xs font-normal">poin</span>
                   </p>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">Target Puasa</span>
-                  <p className="text-lg font-black text-emerald-700 mt-1">
-                    &le; {selectedPatient.targetSugarFasting} <span className="text-xs font-normal">mg/dL</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Tingkat Risiko</span>
+                  <p className="text-sm font-black text-emerald-700 mt-1">
+                    {selectedPatient.latestRiskCategory || selectedPatient.riskStatus || "Rendah"}
                   </p>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">Target 2 Jam PP</span>
-                  <p className="text-lg font-black text-emerald-700 mt-1">
-                    &le; {selectedPatient.targetSugarPostPrandial} <span className="text-xs font-normal">mg/dL</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Target Aktivitas</span>
+                  <p className="text-sm font-bold text-teal-700 mt-1">
+                    &ge; 30 Menit / Hari
                   </p>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
@@ -387,13 +387,13 @@ export function PatientMonitoringTable({
                 </div>
               </div>
 
-              {/* Riwayat Medis Pasien */}
+              {/* Riwayat Kesehatan & Catatan Gaya Hidup */}
               <div>
                 <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Catatan Rekam Medis &amp; Riwayat Komorbiditas:
+                  Riwayat Kesehatan &amp; Catatan Gaya Hidup:
                 </h4>
                 <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 whitespace-pre-line leading-relaxed">
-                  {selectedPatient.medicalHistory || "Belum ada riwayat medis tercatat."}
+                  {selectedPatient.medicalHistory || "Belum ada riwayat kesehatan tercatat."}
                 </div>
               </div>
 
@@ -402,7 +402,7 @@ export function PatientMonitoringTable({
                 <div className="flex items-center gap-2">
                   <MessageCircle className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>
-                    No. WhatsApp Pasien:{" "}
+                    No. WhatsApp Pengguna:{" "}
                     <strong className="text-slate-800">
                       {selectedPatient.phone || "Belum diisi"}
                     </strong>
@@ -411,7 +411,7 @@ export function PatientMonitoringTable({
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-slate-500 shrink-0" />
                   <span>
-                    Kontak Darurat:{" "}
+                    Kontak Darurat / Keluarga:{" "}
                     <strong className="text-slate-800">
                       {selectedPatient.emergencyContact || "Belum diisi"}
                     </strong>
@@ -422,13 +422,13 @@ export function PatientMonitoringTable({
               {/* Form Input Catatan Dokter Baru */}
               <form onSubmit={handleSaveNote} className="pt-2 border-t border-slate-100 space-y-3">
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                  Tambahkan Instruksi / Evaluasi Dokter Baru ke Rekam Medis:
+                  Tambahkan Rekomendasi Medis &amp; Modifikasi Gaya Hidup Baru:
                 </label>
                 <textarea
                   rows={3}
                   value={doctorNote}
                   onChange={(e) => setDoctorNote(e.target.value)}
-                  placeholder="Ketik instruksi dosis obat, saran diet, atau jadwal kontrol berikutnya untuk pasien ini..."
+                  placeholder="Ketik rekomendasi aktivitas fisik harian, pola makan bergizi seimbang, atau saran pencegahan risiko diabetes..."
                   required
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
                 />
@@ -438,7 +438,7 @@ export function PatientMonitoringTable({
                     className="px-4 py-2 rounded-xl bg-cyan-700 hover:bg-cyan-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
                   >
                     <FileEdit className="w-3.5 h-3.5" />
-                    <span>Simpan Instruksi Dokter</span>
+                    <span>Simpan Rekomendasi Dokter</span>
                   </button>
                 </div>
               </form>
