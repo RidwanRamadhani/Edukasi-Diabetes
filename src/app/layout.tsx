@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -34,9 +35,13 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-slate-50/60 text-slate-800 font-sans">
         <DiabetesProvider>
-          <Navbar />
+          <Suspense fallback={null}>
+            <Navbar />
+          </Suspense>
           <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-            <AuthGuard>{children}</AuthGuard>
+            <Suspense fallback={null}>
+              <AuthGuard>{children}</AuthGuard>
+            </Suspense>
           </main>
           <DoctorWhatsAppFloatingButton />
           <footer className="w-full border-t border-slate-200 bg-white py-6 mt-12 text-center text-xs text-slate-500">

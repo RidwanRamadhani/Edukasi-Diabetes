@@ -283,7 +283,7 @@ Diabetes Melitus adalah kelainan metabolik kronis yang ditandai dengan kadar glu
     featuredImage: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
     author: "Gariza Chandra Multazam / kumparan.com",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com/gariza-chandra-multazam/mengenal-tentang-penyakit-diabetes-jenis-gejala-hingga-pencegahannya-20KxR5f502X",
+    sourceUrl: "https://kumparan.com/topic/diabetes",
     createdAt: "2024-04-05T07:15:00Z",
     doctorReview: {
       id: "rev-kump-7",
