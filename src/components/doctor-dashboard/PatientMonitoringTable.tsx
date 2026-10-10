@@ -143,7 +143,7 @@ export function PatientMonitoringTable({
             <tr className="bg-slate-50/80 border-b border-slate-100 text-slate-500 uppercase tracking-wider font-semibold">
               <th className="py-3 px-4">Nama Pengguna</th>
               <th className="py-3 px-4">Fokus DIASERA</th>
-              <th className="py-3 px-4">Total Skor Resiko DM</th>
+              <th className="py-3 px-4">Kategori Risiko DM</th>
               <th className="py-3 px-4">Indeks Perilaku Sehat</th>
               <th className="py-3 px-4">Pemeriksaan Terakhir</th>
               <th className="py-3 px-4 text-right">Aksi Klinis</th>
@@ -181,21 +181,52 @@ export function PatientMonitoringTable({
                     {patient.healthGoal || patient.diabetesType || "Pencegahan Primer"}
                   </td>
 
-                  {/* Total Skor Resiko DM */}
+                  {/* Kategori Risiko DM */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-sm font-extrabold text-slate-900">
-                        {patient.latestRiskScore !== undefined
-                          ? `Skor ${patient.latestRiskScore}`
-                          : (patient.riskStatus === "Tinggi" ? "Skor 17" : patient.riskStatus === "Waspada" ? "Skor 13" : "Skor 4")}
-                      </span>
-                      <span className="text-[10px] text-slate-400 font-semibold">Poin FINDRISC</span>
-                    </div>
-                    <p className="text-[10px] text-slate-500 font-medium">
-                      {patient.latestRiskCategory
-                        ? `FINDRISC: ${patient.latestRiskCategory}`
-                        : (patient.riskStatus === "Tinggi" ? "FINDRISC: Tinggi" : patient.riskStatus === "Waspada" ? "FINDRISC: Sedang" : "FINDRISC: Rendah")}
-                    </p>
+                    {(() => {
+                      const category =
+                        patient.latestRiskCategory ||
+                        (patient.riskStatus === "Tinggi"
+                          ? "Tinggi"
+                          : patient.riskStatus === "Waspada"
+                          ? "Sedang"
+                          : "Rendah");
+
+                      const badgeStyle =
+                        category === "Tinggi"
+                          ? "bg-rose-100 text-rose-800 border-rose-200"
+                          : category === "Sedang"
+                          ? "bg-amber-100 text-amber-800 border-amber-200"
+                          : "bg-emerald-100 text-emerald-800 border-emerald-200";
+
+                      const dotColor =
+                        category === "Tinggi"
+                          ? "bg-rose-500"
+                          : category === "Sedang"
+                          ? "bg-amber-500"
+                          : "bg-emerald-500";
+
+                      const recommendationText =
+                        category === "Tinggi"
+                          ? "Konsultasi & Skrining Lab"
+                          : category === "Sedang"
+                          ? "Modifikasi Gaya Hidup"
+                          : "Pola Hidup Terjaga";
+
+                      return (
+                        <div>
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${badgeStyle}`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
+                            <span>Risiko {category}</span>
+                          </span>
+                          <p className="text-[10px] text-slate-400 mt-0.5 font-medium">
+                            {recommendationText}
+                          </p>
+                        </div>
+                      );
+                    })()}
                   </td>
 
                   {/* Indeks Perilaku Sehat */}
@@ -388,15 +419,19 @@ export function PatientMonitoringTable({
               {/* Parameter Evaluasi DIASERA & Skrining FINDRISC */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">Skor FINDRISC</span>
-                  <p className="text-lg font-black text-slate-900 mt-1">
-                    {selectedPatient.latestRiskScore !== undefined ? selectedPatient.latestRiskScore : 0} <span className="text-xs font-normal">poin</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Kategori Risiko</span>
+                  <p className="text-sm font-black text-slate-900 mt-1">
+                    Risiko {selectedPatient.latestRiskCategory || (selectedPatient.riskStatus === "Tinggi" ? "Tinggi" : selectedPatient.riskStatus === "Waspada" ? "Sedang" : "Rendah")}
                   </p>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">Tingkat Risiko</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Tindak Lanjut Medis</span>
                   <p className="text-sm font-black text-emerald-700 mt-1">
-                    {selectedPatient.latestRiskCategory || selectedPatient.riskStatus || "Rendah"}
+                    {selectedPatient.latestRiskCategory === "Tinggi" || selectedPatient.riskStatus === "Tinggi"
+                      ? "Konsultasi Spesialis"
+                      : selectedPatient.latestRiskCategory === "Sedang" || selectedPatient.riskStatus === "Waspada"
+                      ? "Pemantauan Rutin"
+                      : "Pertahankan Pola Sehat"}
                   </p>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
