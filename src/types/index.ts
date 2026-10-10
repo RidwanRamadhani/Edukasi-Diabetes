@@ -29,6 +29,7 @@ export interface UserProfile {
   latestRiskScore?: number; // Skor FINDRISC (0 - 26)
   latestRiskCategory?: "Rendah" | "Sedang" | "Tinggi";
   latestRiskDate?: string;
+  lifestyleScore?: number; // Indeks Perilaku Sehat (0 - 100%)
   // DIASERA Healthy Lifestyle Targets
   targetDailySteps?: number; // misal 7500 langkah
   targetDailyActivityMinutes?: number; // misal 30 menit

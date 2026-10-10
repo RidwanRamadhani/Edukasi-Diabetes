@@ -188,6 +188,10 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
                 p.latestRiskCategory ??
                 init?.latestRiskCategory ??
                 (p.riskStatus === "Tinggi" ? "Tinggi" : p.riskStatus === "Waspada" ? "Sedang" : "Rendah"),
+              lifestyleScore:
+                p.lifestyleScore ??
+                init?.lifestyleScore ??
+                (p.riskStatus === "Tinggi" ? 45 : p.riskStatus === "Waspada" ? 68 : 88),
               healthGoal:
                 p.healthGoal ??
                 init?.healthGoal ??

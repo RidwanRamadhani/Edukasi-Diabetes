@@ -144,7 +144,7 @@ export function PatientMonitoringTable({
               <th className="py-3 px-4">Nama Pengguna</th>
               <th className="py-3 px-4">Fokus DIASERA</th>
               <th className="py-3 px-4">Total Skor Resiko DM</th>
-              <th className="py-3 px-4">Evaluasi Risiko</th>
+              <th className="py-3 px-4">Indeks Perilaku Sehat</th>
               <th className="py-3 px-4">Pemeriksaan Terakhir</th>
               <th className="py-3 px-4 text-right">Aksi Klinis</th>
             </tr>
@@ -198,13 +198,35 @@ export function PatientMonitoringTable({
                     </p>
                   </td>
 
-                  {/* Evaluasi Risiko */}
+                  {/* Indeks Perilaku Sehat */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${riskColor}`}
-                    >
-                      {patient.latestRiskCategory ? `Risiko ${patient.latestRiskCategory}` : (patient.riskStatus || "Terkontrol")}
-                    </span>
+                    {(() => {
+                      const score =
+                        patient.lifestyleScore ??
+                        (patient.riskStatus === "Terkontrol" ? 88 : patient.riskStatus === "Waspada" ? 68 : 45);
+                      const badgeColor =
+                        score >= 80
+                          ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                          : score >= 60
+                          ? "bg-amber-100 text-amber-800 border-amber-200"
+                          : "bg-rose-100 text-rose-800 border-rose-200";
+                      const statusText =
+                        score >= 80 ? "Sangat Baik" : score >= 60 ? "Cukup Disiplin" : "Perlu Bimbingan";
+
+                      return (
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-sm font-extrabold text-slate-900">{score}%</span>
+                            <span
+                              className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeColor}`}
+                            >
+                              {statusText}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-slate-400 mt-0.5">Kepatuhan Hidup Sehat</p>
+                        </div>
+                      );
+                    })()}
                   </td>
 
                   {/* Waktu Cek */}
