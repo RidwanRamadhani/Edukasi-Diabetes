@@ -213,21 +213,42 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
         setCalculations(JSON.parse(storedCalcs));
       }
 
-      // 9. Articles (Ensure Kumparan articles are merged)
+      // 9. Articles (Ensure Kumparan articles and latest authentic images are synchronized)
       const storedArticles = localStorage.getItem(STORAGE_KEYS.ARTICLES);
       if (storedArticles) {
-        const parsed: EducationalArticle[] = JSON.parse(storedArticles);
-        const existingIds = new Set(parsed.map((a) => a.id));
-        const missing = initialArticles.filter((a) => !existingIds.has(a.id));
-        if (missing.length > 0) {
-          const merged = [...parsed, ...missing];
-          setArticles(merged);
-          localStorage.setItem(STORAGE_KEYS.ARTICLES, JSON.stringify(merged));
-        } else {
-          setArticles(parsed);
+        try {
+          const parsed: EducationalArticle[] = JSON.parse(storedArticles);
+          const existingIds = new Set(parsed.map((a) => a.id));
+          const missing = initialArticles.filter((a) => !existingIds.has(a.id));
+
+          // Always refresh with latest authentic Kumparan photos, URLs, and doctor reviews
+          const refreshed = [...parsed, ...missing].map((art) => {
+            const fresh = initialArticles.find((init) => init.id === art.id);
+            if (fresh) {
+              return {
+                ...art,
+                title: fresh.title,
+                category: fresh.category,
+                summary: fresh.summary,
+                content: fresh.content,
+                featuredImage: fresh.featuredImage,
+                sourceUrl: fresh.sourceUrl,
+                sourceMedia: fresh.sourceMedia,
+                author: fresh.author,
+              };
+            }
+            return art;
+          });
+
+          setArticles(refreshed);
+          localStorage.setItem(STORAGE_KEYS.ARTICLES, JSON.stringify(refreshed));
+        } catch {
+          setArticles(initialArticles);
+          localStorage.setItem(STORAGE_KEYS.ARTICLES, JSON.stringify(initialArticles));
         }
       } else {
         setArticles(initialArticles);
+        localStorage.setItem(STORAGE_KEYS.ARTICLES, JSON.stringify(initialArticles));
       }
 
       // 10. Fetch from Supabase cloud database if configured

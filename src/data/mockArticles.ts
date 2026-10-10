@@ -25,10 +25,10 @@ Banyak penderita diabetes merasa terbebani karena anggapan bahwa mereka tidak bo
 - Hindari makanan olahan yang mengandung pemanis tambahan (sirup jagung tinggi fruktosa) dan lemak trans jenuh.
     `,
     readingTimeMinutes: 4,
-    featuredImage: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1565868849/xto930pvkyykbivkaohl.jpg",
     author: "Kumparan Health (Narasumber: dr. Martha Rosana, Sp.PD)",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com",
+    sourceUrl: "https://kumparan.com/kumparanfood/cegah-gula-darah-naik-penderita-diabetes-perlu-terapkan-pola-makan-3j-kata-ahli-1wu6KBNzhXr",
     createdAt: "2026-09-15T08:30:00Z",
     doctorReview: {
       id: "rev-kump-1",
@@ -66,10 +66,10 @@ Kini, perkembangan teknologi medis menghadirkan terobosan baru bernama **Smart D
 Saat ini inovasi ini sedang melalui fase uji klinis tahap lanjut dan diharapkan dapat menjadi alternatif revolusioner pengganti suntikan insulin konvensional berkali-kali sehari.
     `,
     readingTimeMinutes: 5,
-    featuredImage: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1634025439/01ks8ws2f7wesenpnt0k4bp4dm.png",
     author: "Erina Alya Damayanti / kumparan.com",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com",
+    sourceUrl: "https://kumparan.com/erina-alya-damayanti/smart-drug-delivery-system-insulin-pintar-yang-tahu-kapan-harus-bekerja-sendiri-27QUiAglHDp",
     createdAt: "2026-05-28T09:00:00Z",
     doctorReview: {
       id: "rev-kump-2",
@@ -109,10 +109,10 @@ Banyak orang tidak menyadari bahwa mereka telah mengidap diabetes selama bertahu
 Skrining gula darah rutin setiap 6 bulan bagi usia di atas 30 tahun, dan pemeriksaan **HbA1c** (rata-rata gula darah 3 bulan) untuk deteksi dini sebelum kerusakan organ terjadi.
     `,
     readingTimeMinutes: 5,
-    featuredImage: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1634025439/01j008efc9gxs4x7tyaf20z9qc.jpg",
     author: "Rhesa Novita Dwi Hastuti / kumparan.com",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com",
+    sourceUrl: "https://kumparan.com/rhesa-novitadw/diabetes-melitus-pembunuh-senyap-yang-mengintai-kesehatan-kita-22uQuvDyneD",
     createdAt: "2024-06-10T11:00:00Z",
     doctorReview: {
       id: "rev-kump-3",
@@ -151,10 +151,10 @@ Tanaman yang di Indonesia dikenal dengan sebutan **daun insulin** atau yakon ber
 Rebusan daun insulin hanyalah terapi komplementer (pendukung). **Jangan pernah menghentikan konsumsi obat diabetes dari dokter** atau suntikan insulin tanpa pengawasan medis, karena dapat memicu komplikasi fatal ketoasidosis.
     `,
     readingTimeMinutes: 4,
-    featuredImage: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=800&q=80",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1634025439/01hd33wc454n19amv0zv8xjcmb.jpg",
     author: "Kumparan Food & Herbal Health",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com",
+    sourceUrl: "https://kumparan.com/tips-dan-trik/5-manfaat-daun-insulin-dan-cara-mengolahnya-untuk-penderita-diabetes-21PR5cnBI6r",
     createdAt: "2025-08-18T10:00:00Z",
     doctorReview: {
       id: "rev-kump-4",
@@ -199,10 +199,10 @@ Berikut adalah **5 langkah kunci** yang disarankan dokter anak endokrinologi dal
 - Libatkan anak dalam komunitas penderita diabetes seusianya agar anak tidak merasa berbeda atau terasing dalam aktivitas bermain dan berolahraga.
     `,
     readingTimeMinutes: 5,
-    featuredImage: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
-    author: "Kumparan Mom & Health",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1634025439/01j48v4s9cxw2f01b9a5wqcx43.jpg",
+    author: "Kumparan Mom & Health (Narasumber: DR Dr. Nur Rochmah, Sp.A)",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com",
+    sourceUrl: "https://kumparan.com/kumparanmom/5-langkah-stabilkan-gula-darah-anak-diabetes-tipe-1-24yh3EvWhwA",
     createdAt: "2025-11-20T08:00:00Z",
     doctorReview: {
       id: "rev-kump-5",
@@ -218,33 +218,34 @@ Berikut adalah **5 langkah kunci** yang disarankan dokter anak endokrinologi dal
   },
   {
     id: "art-kump-6",
-    title: "Sayuran yang Perlu Diperhatikan Konsumsinya bagi Penderita Diabetes",
+    title: "Sayuran & Minuman Jus yang Aman bagi Penderita Diabetes, Enggak Bikin Gula Darah Melonjak",
     category: "Nutrisi & Diet",
-    summary: "Tidak semua sayuran aman dikonsumsi bebas tanpa batas. Ketahui perbedaan sayuran berpati tinggi (starchy vegetables) vs sayuran hijau rendah glikemik untuk menjaga target HbA1c.",
+    summary: "Ketahui perbedaan sayuran tanpa zat tepung vs sayuran berpati tinggi, serta pilihan jus buah dan sayur segar yang aman tanpa menaikkan glukosa darah.",
     content: `
-### Benarkah Semua Sayuran Bebas Dimakan Sebanyak-Banyaknya?
-Sayuran memang merupakan sumber vitamin, mineral, dan serat esensial. Namun dalam manajemen diabetes klinis, sayuran terbagi menjadi dua kategori besar: **Sayuran Berpati (Starchy)** dan **Sayuran Non-Pati (Non-Starchy)**.
+### Memilih Sayuran dan Jus yang Tepat bagi Pasien Diabetes
+Sayuran memang kaya serat dan mineral, namun dalam manajemen klinis diabetes, penting untuk membedakan sayuran tanpa pati (non-starchy) dan sayuran berpati tinggi (starchy).
 
-### 1. Sayuran Berpati Tinggi (Perlu Kontrol Porsi):
-Sayuran ini memiliki kandungan karbohidrat kompleks yang cukup tinggi dan dapat menaikkan gula darah bila dimakan dalam jumlah besar bersamaan dengan nasi:
-- **Jagung Manis**: 1 tongkol jagung mengandung sekitar 19 gram karbohidrat.
-- **Kentang & Ubi**: Kaya pati yang mudah dipecah menjadi glukosa. Jika dikonsumsi, kurangi porsi nasi utama Anda.
-- **Kacang Polong & Labu Kuning**: Mengandung karbohidrat lebih tinggi dibanding sayuran daun.
-
-### 2. Sayuran Non-Pati (Sangat Aman & Dianjurkan Porsi Besar):
+### 1. Sayuran Tanpa Pati (Sangat Aman & Dianjurkan):
 Sayuran ini memiliki indeks glikemik sangat rendah (&lt; 15) dan kaya serat larut air yang memperlambat penyerapan glukosa:
-- **Bayam, Kangkung, dan Sawi Hijau**.
-- **Brokoli dan Kembang Kol**: Mengandung sulforaphane yang baik untuk elastisitas pembuluh darah.
+- **Bayam, Kangkung, dan Sawi Hijau**: Kaya magnesium dan antioksidan lutein.
+- **Brokoli dan Kembang Kol**: Mengandung sulforaphane yang membantu elastisitas dinding pembuluh darah.
 - **Mentimun, Tomat, dan Pare**: Pare mengandung charantin yang memiliki efek menyerupai insulin ringan.
 
-### Tips Pengolahan Medis:
-Olah sayuran dengan cara dikukus (*steaming*), ditumis dengan sedikit minyak zaitun/jagung, atau dibuat sup bening. Hindari menggoreng sayuran tepung krispi (*deep fried*) atau menambahkan santan kental berlebih.
+### 2. Sayuran Berpati Tinggi (Perlu Kontrol Porsi):
+- **Jagung Manis & Kentang**: Mengandung karbohidrat tinggi. Jika dikonsumsi, kurangi porsi nasi Anda.
+- **Wortel**: Mengandung glukosa alami lebih tinggi bila dimasak terlalu matang.
+
+### 3. Pilihan Minuman Jus Sehat:
+Alih-alih mengonsumsi jus buah kemasan dengan gula tambahan, penderita diabetes dapat membuat jus sayuran segar di rumah:
+- Jus mentimun dengan perasan lemon segar.
+- Jus bayam hijau dipadukan dengan apel hijau (porsi terbatas).
+- Selalu minum tanpa gula pasir, susu kental manis, atau sirup perasa.
     `,
     readingTimeMinutes: 4,
-    featuredImage: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1565170790/em7ur4mvh3viiatf4mvd.jpg",
     author: "Kumparan Food & Nutrition",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com",
+    sourceUrl: "https://kumparan.com/kumparanfood/5-jus-yang-aman-dikonsumsi-penderita-diabetes-enggak-bikin-gula-darah-naik-1sv9rQ14R2f",
     createdAt: "2025-07-14T09:30:00Z",
     doctorReview: {
       id: "rev-kump-6",
@@ -253,7 +254,7 @@ Olah sayuran dengan cara dikukus (*steaming*), ditumis dengan sedikit minyak zai
       reviewerTitle: "Dokter Spesialis Penyakit Dalam - RSUPN Dr. Cipto Mangunkusumo",
       strNumber: "STR-3171-4458-2023",
       hospital: "RSUPN Dr. Cipto Mangunkusumo Jakarta",
-      reviewNotes: "Edukasi perbedaan sayuran berpati vs non-pati sangat tepat untuk meluruskan kesalahpahaman pasien yang menganggap kentang dan jagung bisa dimakan bebas tanpa mengurangi porsi nasi.",
+      reviewNotes: "Edukasi perbedaan sayuran berpati vs non-pati dan tips jus sayur murni sangat tepat untuk meluruskan kesalahpahaman pasien.",
       approvalStatus: "Approved",
       reviewedAt: "2025-07-15T15:10:00Z",
     },
@@ -271,7 +272,7 @@ Diabetes Melitus adalah kelainan metabolik kronis yang ditandai dengan kadar glu
 1. **Diabetes Tipe 1**: Defisiensi insulin absolut akibat autoimun sel beta pankreas.
 2. **Diabetes Tipe 2**: Resistensi insulin di mana sel tubuh tidak merespons insulin dengan baik, dipicu oleh obesitas sentral dan gaya hidup sedenter (*kurang gerak*).
 3. **Diabetes Gestasional**: Terjadi pada masa kehamilan akibat hormon plasenta yang menghambat kerja insulin, berisiko komplikasi pada bayi bila tidak dikelola ketat.
-4. **Prediabetes**: Kondisi gula darah di atas normal namun belum memenuhi kriteria diabetes (GDP 100-125 mg/dL). Masih dapat disembuhkan total (*reversibel*) dengan intervensi gaya hidup!
+4. **Prediabetes**: Kondisi gula darah di atas normal namun belum memenuhi kriteria diabetes (GDP 100-125 mg/dL). Masih dapat dicegah total (*reversibel*) dengan intervensi gaya hidup!
 
 ### 3 Langkah Pencegahan Primer:
 - **Aktivitas Fisik Rutin**: Lakukan latihan aerobik intensitas sedang minimal 150 menit per minggu (misal jalan cepat 30 menit sehari, 5 hari seminggu).
@@ -279,10 +280,10 @@ Diabetes Melitus adalah kelainan metabolik kronis yang ditandai dengan kadar glu
 - **Batasi Minuman Manis Kemasan**: Ganti minuman berpemanis dengan air mineral, teh hijau tanpa gula, atau infused water.
     `,
     readingTimeMinutes: 5,
-    featuredImage: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
-    author: "Kumparan Health Desk",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1634025439/01gzy254wa5mpey6z1ve9ra0s1.jpg",
+    author: "Gariza Chandra Multazam / kumparan.com",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com",
+    sourceUrl: "https://kumparan.com/gariza-chandra-multazam",
     createdAt: "2024-04-05T07:15:00Z",
     doctorReview: {
       id: "rev-kump-7",
@@ -298,11 +299,11 @@ Diabetes Melitus adalah kelainan metabolik kronis yang ditandai dengan kadar glu
   },
   {
     id: "art-kump-8",
-    title: "Panduan Waktu Terbaik Cek Gula Darah Mandiri (SMBG) Agar Terbaca Akurat",
+    title: "Panduan Cek Gula Darah yang Aman, Tepat, dan Mudah bagi Pasien Diabetes",
     category: "Pola Hidup & Aktivitas",
-    summary: "Waktu penusukan glucometer menentukan keputusan dosis obat dan pola makan. Pelajari kapan harus cek puasa, sebelum makan, dan 2 jam postprandial.",
+    summary: "Pelajari panduan pemeriksaan gula darah mandiri (glukometer), langkah penusukan steril tanpa nyeri, dan 4 waktu pemeriksaan krusial (puasa, 2 jam pasca makan, sebelum tidur).",
     content: `
-Pemeriksaan Gula Darah Mandiri (Self-Monitoring of Blood Glucose / SMBG) adalah mata dan telinga penderita diabetes dalam memantau kondisi fisiologis tubuh harian.
+Pemeriksaan Gula Darah Mandiri (Self-Monitoring of Blood Glucose / SMBG) menggunakan glukometer adalah mata dan telinga penderita diabetes dalam memantau kondisi fisiologis tubuh harian.
 
 ### 4 Waktu Utama Pengukuran yang Dianjurkan:
 1. **Gula Darah Puasa (GDP)**:
@@ -316,14 +317,17 @@ Pemeriksaan Gula Darah Mandiri (Self-Monitoring of Blood Glucose / SMBG) adalah 
 4. **Sewaktu (Saat Gejala Muncul)**:
    - Jika Anda merasakan gemetar, keringat dingin, jantung berdebar, atau pandangan kabur, segera cek kadar gula darah.
 
-### Tips Higienitas:
-Selalu cuci tangan dengan sabun dan air mengalir lalu keringkan. Hindari penggunaan hand sanitizer beralkohol berlebihan sesaat sebelum menusuk karena residu dapat mendistorsi pembacaan sensor strip uji.
+### Langkah Penusukan Higienis & Nyaman:
+1. Cuci tangan dengan air mengalir dan sabun, lalu keringkan sepenuhnya.
+2. Pasang strip uji ke glukometer hingga menyala.
+3. Tusuk di bagian samping ujung jari (bukan di bantalan tengah) untuk meminimalkan rasa nyeri.
+4. Sentuhkan tetesan darah ke ujung strip dan tunggu hasil terbaca dalam 5 detik.
     `,
     readingTimeMinutes: 5,
-    featuredImage: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
-    author: "Kumparan & Tim Klinis DiaCare",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1644227839/ahdj5bzhayccqrfxk3bq.jpg",
+    author: "Kabar Harian / kumparan.com",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com",
+    sourceUrl: "https://kumparan.com/kabar-harian/panduan-cek-gula-darah-yang-aman-dan-mudah-1xSZIey270u",
     createdAt: "2026-10-04T08:30:00Z",
     doctorReview: {
       id: "rev-kump-8",
