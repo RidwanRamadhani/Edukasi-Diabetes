@@ -188,10 +188,11 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       }
 
       // If there is an assessed risk result, prioritize it in the loaded profile
-      if (parsedRisks && parsedRisks.length > 0 && loadedProfile) {
+      const activeBase = loadedProfile || initialProfile;
+      if (parsedRisks && parsedRisks.length > 0) {
         const latest = parsedRisks[0];
         loadedProfile = {
-          ...loadedProfile,
+          ...activeBase,
           latestRiskScore: latest.totalScore,
           latestRiskCategory: latest.riskCategory,
           latestRiskDate: latest.assessedAt,
@@ -213,12 +214,20 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
           const parsed: UserProfile[] = JSON.parse(storedPatients);
           patientsList = parsed.map((p) => {
             const init = initialMonitoredPatients.find((i) => i.id === p.id);
+            // Auto-heal outdated mock scores from old localStorage sessions
+            let score = p.latestRiskScore;
+            if (p.id === "patient-3" && (score === 16 || score === undefined)) {
+              score = 17;
+            }
+            if (p.id === "patient-2" && (score === 9 || score === undefined)) {
+              score = 13;
+            }
             return {
               ...p,
               latestRiskScore:
-                p.latestRiskScore ??
+                score ??
                 init?.latestRiskScore ??
-                (p.riskStatus === "Tinggi" ? 16 : p.riskStatus === "Waspada" ? 13 : 4),
+                (p.riskStatus === "Tinggi" ? 17 : p.riskStatus === "Waspada" ? 13 : 4),
               latestRiskCategory:
                 p.latestRiskCategory ??
                 init?.latestRiskCategory ??

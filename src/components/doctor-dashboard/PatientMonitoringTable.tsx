@@ -187,7 +187,7 @@ export function PatientMonitoringTable({
                       <span className="text-sm font-extrabold text-slate-900">
                         {patient.latestRiskScore !== undefined
                           ? `Skor ${patient.latestRiskScore}`
-                          : (patient.riskStatus === "Tinggi" ? "Skor 16" : patient.riskStatus === "Waspada" ? "Skor 13" : "Skor 4")}
+                          : (patient.riskStatus === "Tinggi" ? "Skor 17" : patient.riskStatus === "Waspada" ? "Skor 13" : "Skor 4")}
                       </span>
                       <span className="text-[10px] text-slate-400 font-semibold">Poin FINDRISC</span>
                     </div>

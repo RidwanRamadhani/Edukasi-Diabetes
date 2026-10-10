@@ -89,7 +89,7 @@ export const initialMonitoredPatients: UserProfile[] = [
     healthGoal: "Deteksi Dini & Cek Risiko DM",
     currentWeight: 84,
     height: 172,
-    latestRiskScore: 16,
+    latestRiskScore: 17,
     latestRiskCategory: "Tinggi",
     lifestyleScore: 45,
     targetSugarFasting: 90,
