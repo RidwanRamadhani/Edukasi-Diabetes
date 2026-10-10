@@ -170,7 +170,42 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
         setActiveDoctor(JSON.parse(storedActiveDoctor));
       }
 
-      // 5. Monitored patients list (Sync active profile if present)
+      // 5a. Habits logs & Risk assessments
+      const storedHabits = localStorage.getItem(STORAGE_KEYS.HABITS);
+      if (storedHabits) {
+        try {
+          setHabitLogs(JSON.parse(storedHabits));
+        } catch {}
+      }
+
+      let parsedRisks: RiskAssessmentResult[] = initialRiskAssessments;
+      const storedRisks = localStorage.getItem(STORAGE_KEYS.RISK_ASSESSMENTS);
+      if (storedRisks) {
+        try {
+          parsedRisks = JSON.parse(storedRisks);
+          setRiskAssessments(parsedRisks);
+        } catch {}
+      }
+
+      // If there is an assessed risk result, prioritize it in the loaded profile
+      if (parsedRisks && parsedRisks.length > 0 && loadedProfile) {
+        const latest = parsedRisks[0];
+        loadedProfile = {
+          ...loadedProfile,
+          latestRiskScore: latest.totalScore,
+          latestRiskCategory: latest.riskCategory,
+          latestRiskDate: latest.assessedAt,
+          riskStatus:
+            latest.riskCategory === "Rendah"
+              ? "Terkontrol"
+              : latest.riskCategory === "Sedang"
+              ? "Waspada"
+              : "Tinggi",
+        };
+        setProfile(loadedProfile);
+      }
+
+      // 5b. Monitored patients list (Sync active profile and risk assessments)
       let patientsList: UserProfile[] = initialMonitoredPatients;
       const storedPatients = localStorage.getItem(STORAGE_KEYS.MONITORED_PATIENTS);
       if (storedPatients) {
@@ -183,7 +218,7 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
               latestRiskScore:
                 p.latestRiskScore ??
                 init?.latestRiskScore ??
-                (p.riskStatus === "Tinggi" ? 16 : p.riskStatus === "Waspada" ? 9 : 4),
+                (p.riskStatus === "Tinggi" ? 16 : p.riskStatus === "Waspada" ? 13 : 4),
               latestRiskCategory:
                 p.latestRiskCategory ??
                 init?.latestRiskCategory ??
@@ -204,16 +239,22 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       if (loadedProfile) {
         const targetId = loadedProfile.id;
         const targetEmail = loadedProfile.email?.toLowerCase();
+        const targetName = loadedProfile.name?.toLowerCase();
         let found = false;
         patientsList = patientsList.map((p) => {
-          if (
+          const isMatch =
             (targetId && p.id === targetId) ||
-            (targetEmail && p.email.toLowerCase() === targetEmail)
-          ) {
+            (targetEmail && p.email?.toLowerCase() === targetEmail) ||
+            (targetName && p.name?.toLowerCase() === targetName);
+          if (isMatch) {
             found = true;
             return {
               ...p,
               ...loadedProfile,
+              latestRiskScore: loadedProfile!.latestRiskScore ?? p.latestRiskScore,
+              latestRiskCategory: loadedProfile!.latestRiskCategory ?? p.latestRiskCategory,
+              latestRiskDate: loadedProfile!.latestRiskDate ?? p.latestRiskDate,
+              lifestyleScore: loadedProfile!.lifestyleScore ?? p.lifestyleScore,
               lastBloodSugarLevel: loadedProfile!.lastBloodSugarLevel ?? p.lastBloodSugarLevel,
               lastBloodSugarContext: loadedProfile!.lastBloodSugarContext ?? p.lastBloodSugarContext,
               lastCheckDate: loadedProfile!.lastCheckDate ?? p.lastCheckDate,
@@ -230,21 +271,6 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       try {
         localStorage.setItem(STORAGE_KEYS.MONITORED_PATIENTS, JSON.stringify(patientsList));
       } catch {}
-
-      // 5b. Habits logs & Risk assessments
-      const storedHabits = localStorage.getItem(STORAGE_KEYS.HABITS);
-      if (storedHabits) {
-        try {
-          setHabitLogs(JSON.parse(storedHabits));
-        } catch {}
-      }
-
-      const storedRisks = localStorage.getItem(STORAGE_KEYS.RISK_ASSESSMENTS);
-      if (storedRisks) {
-        try {
-          setRiskAssessments(JSON.parse(storedRisks));
-        } catch {}
-      }
 
       // 6. Blood sugar logs
       const storedLogs = localStorage.getItem(STORAGE_KEYS.LOGS);
@@ -773,7 +799,20 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       id: `risk-${Date.now()}`,
       assessedAt: new Date().toISOString(),
     };
-    const updated = [created, ...riskAssessments];
+
+    // Update existing recent assessment or prepend
+    const existingIndex = riskAssessments.findIndex(
+      (r) =>
+        r.userId === newAssessment.userId &&
+        Date.now() - new Date(r.assessedAt).getTime() < 1800000
+    );
+    let updated: RiskAssessmentResult[];
+    if (existingIndex >= 0) {
+      updated = [...riskAssessments];
+      updated[existingIndex] = created;
+    } else {
+      updated = [created, ...riskAssessments];
+    }
     setRiskAssessments(updated);
 
     const updatedProfile: UserProfile = {
@@ -781,13 +820,46 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       latestRiskScore: created.totalScore,
       latestRiskCategory: created.riskCategory,
       latestRiskDate: created.assessedAt,
-      riskStatus: created.riskCategory === "Rendah" ? "Terkontrol" : created.riskCategory === "Sedang" ? "Waspada" : "Tinggi",
+      riskStatus:
+        created.riskCategory === "Rendah"
+          ? "Terkontrol"
+          : created.riskCategory === "Sedang"
+          ? "Waspada"
+          : "Tinggi",
     };
     setProfile(updatedProfile);
+
+    // CRITICAL: Synchronize directly into doctor's monitoredPatients table!
+    const targetId = profile.id;
+    const targetEmail = profile.email?.toLowerCase();
+    const targetName = profile.name?.toLowerCase();
+
+    let matched = false;
+    const updatedMonitored = monitoredPatients.map((p) => {
+      const isMatch =
+        (targetId && p.id === targetId) ||
+        (targetEmail && p.email?.toLowerCase() === targetEmail) ||
+        (targetName && p.name?.toLowerCase() === targetName);
+      if (isMatch) {
+        matched = true;
+        return {
+          ...p,
+          latestRiskScore: created.totalScore,
+          latestRiskCategory: created.riskCategory,
+          latestRiskDate: created.assessedAt,
+          riskStatus: updatedProfile.riskStatus,
+        };
+      }
+      return p;
+    });
+
+    const finalMonitored = matched ? updatedMonitored : [updatedProfile, ...updatedMonitored];
+    setMonitoredPatients(finalMonitored);
 
     try {
       localStorage.setItem(STORAGE_KEYS.RISK_ASSESSMENTS, JSON.stringify(updated));
       localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(updatedProfile));
+      localStorage.setItem(STORAGE_KEYS.MONITORED_PATIENTS, JSON.stringify(finalMonitored));
     } catch {}
 
     if (isSupabaseConfigured()) {

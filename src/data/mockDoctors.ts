@@ -67,7 +67,7 @@ export const initialMonitoredPatients: UserProfile[] = [
     healthGoal: "Kelompok Waspada / Faktor Risiko Keluarga",
     currentWeight: 68,
     height: 158,
-    latestRiskScore: 9,
+    latestRiskScore: 13,
     latestRiskCategory: "Sedang",
     lifestyleScore: 68,
     targetSugarFasting: 100,

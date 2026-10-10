@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -163,6 +163,50 @@ export default function RiskCheckPage() {
     setSaveSuccessMsg("Hasil skrining berhasil disimpan ke profil DIASERA Anda!");
     setTimeout(() => setSaveSuccessMsg(""), 4000);
   };
+
+  // Otomatis sinkronkan hasil skor risiko ke profil dan dashboard dokter saat dihitung
+  useEffect(() => {
+    if (hasCalculated && totalScore > 0) {
+      addRiskAssessment({
+        userId: profile.id,
+        totalScore,
+        riskCategory,
+        tenYearRiskEstimate: riskEstimate,
+        bmi,
+        answers: {
+          ageCategory:
+            ageRange === 0
+              ? "< 45 tahun"
+              : ageRange === 2
+              ? "45 - 54 tahun"
+              : ageRange === 3
+              ? "55 - 64 tahun"
+              : "> 64 tahun",
+          bmiCategory:
+            bmi < 25 ? "< 25 kg/m² (Normal)" : bmi <= 30 ? "25 - 30 kg/m² (Berlebih)" : "> 30 kg/m² (Obesitas)",
+          waistCategory:
+            waistRange === 0
+              ? gender === "Laki-laki"
+                ? "< 90 cm"
+                : "< 80 cm"
+              : waistRange === 3
+              ? gender === "Laki-laki"
+                ? "90 - 102 cm"
+                : "80 - 88 cm"
+              : gender === "Laki-laki"
+              ? "> 102 cm"
+              : "> 88 cm",
+          dailyPhysicalActivity: hasPhysicalActivity,
+          dailyVeggieFruit: hasDailyVeggie,
+          hypertensionMeds: hasHypertensionMeds,
+          highBloodSugarHistory: hasHighGlucoseHistory,
+          familyDiabetesHistory: familyHistory,
+        },
+        recommendations,
+      });
+      setIsSaved(true);
+    }
+  }, [totalScore, riskCategory, riskEstimate, bmi, hasCalculated]);
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
