@@ -175,7 +175,25 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
       const storedPatients = localStorage.getItem(STORAGE_KEYS.MONITORED_PATIENTS);
       if (storedPatients) {
         try {
-          patientsList = JSON.parse(storedPatients);
+          const parsed: UserProfile[] = JSON.parse(storedPatients);
+          patientsList = parsed.map((p) => {
+            const init = initialMonitoredPatients.find((i) => i.id === p.id);
+            return {
+              ...p,
+              latestRiskScore:
+                p.latestRiskScore ??
+                init?.latestRiskScore ??
+                (p.riskStatus === "Tinggi" ? 16 : p.riskStatus === "Waspada" ? 9 : 4),
+              latestRiskCategory:
+                p.latestRiskCategory ??
+                init?.latestRiskCategory ??
+                (p.riskStatus === "Tinggi" ? "Tinggi" : p.riskStatus === "Waspada" ? "Sedang" : "Rendah"),
+              healthGoal:
+                p.healthGoal ??
+                init?.healthGoal ??
+                "Pencegahan Primer (Belum Kena DM)",
+            };
+          });
         } catch {}
       }
 

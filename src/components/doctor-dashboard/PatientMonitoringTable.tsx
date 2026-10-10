@@ -143,7 +143,7 @@ export function PatientMonitoringTable({
             <tr className="bg-slate-50/80 border-b border-slate-100 text-slate-500 uppercase tracking-wider font-semibold">
               <th className="py-3 px-4">Nama Pengguna</th>
               <th className="py-3 px-4">Fokus DIASERA</th>
-              <th className="py-3 px-4">Status / Skor Risiko</th>
+              <th className="py-3 px-4">Total Skor Resiko DM</th>
               <th className="py-3 px-4">Evaluasi Risiko</th>
               <th className="py-3 px-4">Pemeriksaan Terakhir</th>
               <th className="py-3 px-4 text-right">Aksi Klinis</th>
@@ -181,16 +181,20 @@ export function PatientMonitoringTable({
                     {patient.healthGoal || patient.diabetesType || "Pencegahan Primer"}
                   </td>
 
-                  {/* Kadar Gula Darah */}
-                  {/* Status / Skor Risiko */}
+                  {/* Total Skor Resiko DM */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
                     <div className="flex items-baseline gap-1">
                       <span className="text-sm font-extrabold text-slate-900">
-                        {patient.latestRiskScore !== undefined ? `Skor ${patient.latestRiskScore}` : (patient.lastBloodSugarLevel ? `${patient.lastBloodSugarLevel} mg/dL` : "Skor 0")}
+                        {patient.latestRiskScore !== undefined
+                          ? `Skor ${patient.latestRiskScore}`
+                          : (patient.riskStatus === "Tinggi" ? "Skor 16" : patient.riskStatus === "Waspada" ? "Skor 9" : "Skor 4")}
                       </span>
+                      <span className="text-[10px] text-slate-400 font-semibold">Poin FINDRISC</span>
                     </div>
-                    <p className="text-[10px] text-slate-400">
-                      {patient.latestRiskCategory ? `FINDRISC: ${patient.latestRiskCategory}` : (patient.lastBloodSugarContext || "Pencegahan")}
+                    <p className="text-[10px] text-slate-500 font-medium">
+                      {patient.latestRiskCategory
+                        ? `FINDRISC: ${patient.latestRiskCategory}`
+                        : (patient.riskStatus === "Tinggi" ? "FINDRISC: Tinggi" : patient.riskStatus === "Waspada" ? "FINDRISC: Sedang" : "FINDRISC: Rendah")}
                     </p>
                   </td>
 
