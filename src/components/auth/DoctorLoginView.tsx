@@ -25,8 +25,8 @@ export function DoctorLoginView() {
   const router = useRouter();
   const { doctorLogin, isDoctorAuthenticated, activeDoctor, doctorLogout } = useDiabetesStore();
 
-  const [identifier, setIdentifier] = useState("dr.ridwan@diasera.med");
-  const [password, setPassword] = useState("doctor123");
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -51,12 +51,6 @@ export function DoctorLoginView() {
     } else {
       setErrorMsg(res.message);
     }
-  };
-
-  const fillDoctorDemo = (email: string) => {
-    setIdentifier(email);
-    setPassword("doctor123");
-    setErrorMsg("");
   };
 
   return (
@@ -193,32 +187,6 @@ export function DoctorLoginView() {
                   title={showPassword ? "Sembunyikan sandi" : "Tampilkan sandi"}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Quick Doctor Login Buttons */}
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-              <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
-                Akun Dokter Terverifikasi (Pilihan Cepat Pengujian):
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => fillDoctorDemo("dr.ridwan@diasera.med")}
-                  className="text-left p-2.5 rounded-xl bg-white border border-teal-200/80 hover:bg-teal-50 text-xs transition-colors cursor-pointer"
-                >
-                  <p className="font-bold text-teal-900">dr. Ridwan Ramadhani, Sp.PD</p>
-                  <p className="text-[10px] text-slate-500 font-mono">dr.ridwan@diasera.med</p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => fillDoctorDemo("dr.handoko@diasera.med")}
-                  className="text-left p-2.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-xs transition-colors cursor-pointer"
-                >
-                  <p className="font-bold text-slate-800">dr. Handoko Santoso, Sp.PD</p>
-                  <p className="text-[10px] text-slate-500 font-mono">dr.handoko@diasera.med</p>
                 </button>
               </div>
             </div>

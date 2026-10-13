@@ -42,8 +42,8 @@ export function AuthView() {
   const [tab, setTab] = useState<"login" | "register">("login");
 
   // Login form state
-  const [loginEmail, setLoginEmail] = useState("budi.pratama@example.com");
-  const [loginPassword, setLoginPassword] = useState("password123");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [showLoginPassword, setShowLoginPassword] = useState(false);
 
   // Register form state
@@ -140,12 +140,6 @@ export function AuthView() {
       setErrorMsg(err?.message || "Terjadi kendala saat mendaftarkan akun. Silakan coba lagi.");
       setIsSubmitting(false);
     }
-  };
-
-  const fillDemoAccount = () => {
-    setLoginEmail("budi.pratama@example.com");
-    setLoginPassword("password123");
-    setErrorMsg("");
   };
 
   return (
@@ -340,23 +334,6 @@ export function AuthView() {
                     )}
                   </button>
                 </div>
-              </div>
-
-              {/* Demo Account Helper Button */}
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between text-xs">
-                <div>
-                  <p className="font-semibold text-slate-700">Akun Pengujian Demo Pasien:</p>
-                  <p className="text-[11px] text-slate-500 font-mono">
-                    budi.pratama@example.com • sandi: password123
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={fillDemoAccount}
-                  className="px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[11px] font-bold cursor-pointer transition-colors"
-                >
-                  Gunakan Akun Ini
-                </button>
               </div>
 
               <button
