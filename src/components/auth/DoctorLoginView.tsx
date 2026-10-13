@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -28,6 +28,17 @@ export function DoctorLoginView() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // Clear doctor fields on mount to prevent browser autofill
+  useEffect(() => {
+    setIdentifier("");
+    setPassword("");
+    const timer = setTimeout(() => {
+      setIdentifier("");
+      setPassword("");
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
@@ -148,7 +159,11 @@ export function DoctorLoginView() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
+            {/* Dummy fields to absorb browser autofill */}
+            <input type="text" name="fake_doctor_prevent_autofill" className="hidden" tabIndex={-1} aria-hidden="true" autoComplete="off" />
+            <input type="password" name="fake_doctor_pwd_prevent_autofill" className="hidden" tabIndex={-1} aria-hidden="true" autoComplete="new-password" />
+
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                 Email / Nomor STR Dokter <span className="text-rose-500">*</span>
@@ -157,11 +172,13 @@ export function DoctorLoginView() {
                 <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
+                  name="diasera_doctor_identifier"
+                  autoComplete="off"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                   placeholder="Contoh: dr.ridwan@diasera.med atau STR-3171-8842-2024"
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600 bg-white"
                 />
               </div>
             </div>
@@ -174,11 +191,13 @@ export function DoctorLoginView() {
                 <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="diasera_doctor_password"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Masukkan kata sandi dokter"
                   required
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600 bg-white"
                 />
                 <button
                   type="button"

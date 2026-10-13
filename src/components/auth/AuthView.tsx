@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -45,6 +45,17 @@ export function AuthView() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [showLoginPassword, setShowLoginPassword] = useState(false);
+
+  // Clear fields on mount to prevent browser autofill injection
+  useEffect(() => {
+    setLoginEmail("");
+    setLoginPassword("");
+    const timer = setTimeout(() => {
+      setLoginEmail("");
+      setLoginPassword("");
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Register form state
   const [regName, setRegName] = useState("");
@@ -287,7 +298,11 @@ export function AuthView() {
 
           {/* TAB 1: MASUK (LOGIN) */}
           {tab === "login" && (
-            <form onSubmit={handleLoginSubmit} className="space-y-4">
+            <form onSubmit={handleLoginSubmit} className="space-y-4" autoComplete="off">
+              {/* Dummy fields to absorb browser autofill */}
+              <input type="text" name="fake_email_prevent_autofill" className="hidden" tabIndex={-1} aria-hidden="true" autoComplete="off" />
+              <input type="password" name="fake_pwd_prevent_autofill" className="hidden" tabIndex={-1} aria-hidden="true" autoComplete="new-password" />
+
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                   Email Pasien Terdaftar <span className="text-rose-500">*</span>
@@ -296,11 +311,13 @@ export function AuthView() {
                   <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type="email"
+                    name="diasera_patient_email"
+                    autoComplete="off"
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
                     placeholder="nama@email.com"
                     required
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-white"
                   />
                 </div>
               </div>
@@ -315,11 +332,13 @@ export function AuthView() {
                   <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type={showLoginPassword ? "text" : "password"}
+                    name="diasera_patient_password"
+                    autoComplete="new-password"
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder="Masukkan kata sandi akun"
                     required
-                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-white"
                   />
                   <button
                     type="button"
