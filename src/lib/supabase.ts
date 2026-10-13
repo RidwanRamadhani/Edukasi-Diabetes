@@ -19,7 +19,7 @@ export function isSupabaseConfigured(): boolean {
   return true;
 }
 
-// Global Supabase client instance (mock safe if env not yet set)
+// Global Supabase client instance
 export const supabase = createClient(
   supabaseUrl || "https://placeholder-project.supabase.co",
   supabaseAnonKey || "placeholder-anon-key",
@@ -32,8 +32,33 @@ export const supabase = createClient(
 );
 
 /**
+ * Helper to transform a row from public.patients into a typed UserProfile.
+ */
+function mapPatientRowToProfile(row: any): UserProfile {
+  return {
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    phone: row.phone || undefined,
+    gender: row.gender || "Laki-laki",
+    age: row.age || 45,
+    diabetesType: row.diabetes_type || "Pencegahan Primer",
+    currentWeight: Number(row.current_weight) || 70,
+    height: Number(row.height) || 165,
+    targetSugarFasting: Number(row.target_sugar_fasting) || 100,
+    targetSugarPostPrandial: Number(row.target_sugar_post_prandial) || 140,
+    medicalHistory: row.medical_history || "",
+    emergencyContact: row.emergency_contact || "-",
+    lastBloodSugarLevel: row.last_blood_sugar_level || undefined,
+    lastBloodSugarContext: row.last_blood_sugar_context || undefined,
+    lastCheckDate: row.last_check_date || undefined,
+    riskStatus: row.risk_status || "Terkontrol",
+  };
+}
+
+/**
  * Inserts or updates a patient record in the Supabase 'patients' table.
- * If password is provided, also attempts Supabase Auth registration.
+ * Also attempts Supabase Auth registration.
  */
 export async function syncPatientToSupabase(
   patient: UserProfile,
@@ -47,7 +72,48 @@ export async function syncPatientToSupabase(
   }
 
   try {
-    // 1. Upsert into public.patients table immediately (guarantees fast cloud persistence)
+    let authUserId: string | null = null;
+    let authNote = "";
+
+    // 1. Supabase Auth registration
+    if (password) {
+      try {
+        const { data: authData, error: authErr } = await supabase.auth.signUp({
+          email: patient.email.toLowerCase(),
+          password: password,
+          options: {
+            data: {
+              name: patient.name,
+              diabetesType: patient.diabetesType,
+              age: patient.age,
+            },
+          },
+        });
+
+        if (authErr) {
+          console.warn("Supabase Auth signUp note:", authErr.message);
+          if (
+            authErr.message.toLowerCase().includes("email signups are disabled") ||
+            (authErr as any).code === "email_provider_disabled"
+          ) {
+            authNote =
+              "Provider Email di Supabase sedang NONAKTIF. Aktifkan 'Enable Email provider' di Dashboard Supabase.";
+          } else {
+            authNote = authErr.message;
+          }
+        } else if (authData?.user) {
+          authUserId = authData.user.id;
+          if (!authData.session) {
+            authNote = "Email konfirmasi di Supabase aktif. Matikan 'Confirm email' di Dashboard Supabase.";
+          }
+        }
+      } catch (authEx: any) {
+        console.warn("Supabase Auth background sign up exception:", authEx);
+        authNote = authEx?.message || "";
+      }
+    }
+
+    // 2. Upsert into public.patients table immediately
     const patientRow: Record<string, any> = {
       id: patient.id,
       name: patient.name,
@@ -68,6 +134,10 @@ export async function syncPatientToSupabase(
       risk_status: patient.riskStatus || "Terkontrol",
     };
 
+    if (authUserId) {
+      patientRow.auth_user_id = authUserId;
+    }
+
     const { data, error } = await supabase
       .from("patients")
       .upsert(patientRow, { onConflict: "email" })
@@ -78,51 +148,10 @@ export async function syncPatientToSupabase(
       return { success: false, message: error.message };
     }
 
-    // 2. Supabase Auth registration
-    let authUserId: string | null = null;
-    let authNote: string = "";
-    if (password) {
-      try {
-        const { data: authData, error: authErr } = await supabase.auth.signUp({
-          email: patient.email.toLowerCase(),
-          password: password,
-          options: {
-            data: {
-              name: patient.name,
-              diabetesType: patient.diabetesType,
-              age: patient.age,
-            },
-          },
-        });
-
-        if (authErr) {
-          console.warn("Supabase Auth signUp note:", authErr.message);
-          authNote = authErr.message;
-        } else if (authData?.user) {
-          authUserId = authData.user.id;
-          if (!authData.session) {
-            authNote = "Email belum dikonfirmasi di Supabase.";
-          }
-        }
-      } catch (authEx: any) {
-        console.warn("Supabase Auth background sign up exception:", authEx);
-        authNote = authEx?.message || "";
-      }
-    }
-
-    if (authUserId) {
-      patientRow.auth_user_id = authUserId;
-      // Also update the row if it was already upserted
-      await supabase
-        .from("patients")
-        .update({ auth_user_id: authUserId })
-        .eq("email", patient.email.toLowerCase());
-    }
-
     return {
       success: true,
       message: authNote
-        ? `Data pasien tersimpan di cloud Supabase. (${authNote})`
+        ? `Data pasien tersimpan di database. Catatan: ${authNote}`
         : "Data pasien berhasil terdaftar dan tersimpan di database cloud Supabase!",
       data,
     };
@@ -137,6 +166,8 @@ export async function syncPatientToSupabase(
 
 /**
  * Signs in a patient using Supabase Auth and hydrates their UserProfile from public.patients.
+ * Includes Auto-Heal: if user registered in public.patients while Email Provider was off,
+ * it will automatically register them into auth.users upon first successful credentials verification.
  */
 export async function loginPatientWithSupabase(
   email: string,
@@ -160,13 +191,67 @@ export async function loginPatientWithSupabase(
 
     if (authError) {
       console.warn("Supabase signInWithPassword note:", authError.message);
+
+      // Error case 1: Email provider is completely disabled in Supabase
+      if (
+        authError.message.toLowerCase().includes("email logins are disabled") ||
+        (authError as any).code === "email_provider_disabled"
+      ) {
+        return {
+          success: false,
+          message:
+            "Provider Email di Supabase Anda sedang NONAKTIF (Email logins are disabled). Buka Dashboard Supabase > Authentication > Providers > Email, lalu AKTIFKAN sakelar paling atas 'Enable Email provider'.",
+        };
+      }
+
+      // Error case 2: Confirm email is still required
       if (authError.message.toLowerCase().includes("email not confirmed")) {
         return {
           success: false,
           message:
-            "Akun terdaftar, namun email belum dikonfirmasi di Supabase. Silakan periksa inbox/spam email Anda, atau matikan opsi 'Confirm email' di Dashboard Supabase agar bisa langsung login.",
+            "Akun terdaftar, namun email belum dikonfirmasi di Supabase. Mohon matikan sakelar 'Confirm email' di Dashboard Supabase agar bisa langsung login.",
         };
       }
+
+      // Error case 3: Invalid credentials -> Check Auto-heal for accounts registered into public.patients
+      if (authError.message.includes("Invalid login credentials")) {
+        const { data: patientRow } = await supabase
+          .from("patients")
+          .select("*")
+          .eq("email", cleanEmail)
+          .maybeSingle();
+
+        // If patient exists in public.patients without auth_user_id (created when Email was disabled)
+        if (patientRow && !patientRow.auth_user_id) {
+          const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
+            email: cleanEmail,
+            password: password,
+            options: {
+              data: {
+                name: patientRow.name,
+                diabetesType: patientRow.diabetes_type,
+                age: patientRow.age,
+              },
+            },
+          });
+
+          if (!signUpErr && signUpData?.user) {
+            // Update auth_user_id in patients table
+            await supabase
+              .from("patients")
+              .update({ auth_user_id: signUpData.user.id })
+              .eq("email", cleanEmail);
+
+            const profile = mapPatientRowToProfile(patientRow);
+            return {
+              success: true,
+              message: `Selamat datang kembali, ${profile.name}! Akun berhasil disinkronkan ke Supabase Auth.`,
+              profile,
+            };
+          }
+        }
+      }
+
       return {
         success: false,
         message: authError.message.includes("Invalid login credentials")
@@ -196,25 +281,7 @@ export async function loginPatientWithSupabase(
     let profile: UserProfile;
 
     if (patientRow) {
-      profile = {
-        id: patientRow.id,
-        name: patientRow.name,
-        email: patientRow.email,
-        phone: patientRow.phone || undefined,
-        gender: patientRow.gender || "Laki-laki",
-        age: patientRow.age || 45,
-        diabetesType: patientRow.diabetes_type || "Pencegahan Primer",
-        currentWeight: Number(patientRow.current_weight) || 70,
-        height: Number(patientRow.height) || 165,
-        targetSugarFasting: Number(patientRow.target_sugar_fasting) || 100,
-        targetSugarPostPrandial: Number(patientRow.target_sugar_post_prandial) || 140,
-        medicalHistory: patientRow.medical_history || "",
-        emergencyContact: patientRow.emergency_contact || "-",
-        lastBloodSugarLevel: patientRow.last_blood_sugar_level || undefined,
-        lastBloodSugarContext: patientRow.last_blood_sugar_context || undefined,
-        lastCheckDate: patientRow.last_check_date || undefined,
-        riskStatus: patientRow.risk_status || "Terkontrol",
-      };
+      profile = mapPatientRowToProfile(patientRow);
     } else {
       profile = {
         id: `patient-${Date.now()}`,
@@ -265,26 +332,7 @@ export async function fetchPatientsFromSupabase(): Promise<UserProfile[] | null>
       return null;
     }
 
-    // Transform snake_case columns to camelCase UserProfile
-    return data.map((row: any) => ({
-      id: row.id,
-      name: row.name,
-      email: row.email,
-      phone: row.phone || undefined,
-      gender: row.gender || "Laki-laki",
-      age: row.age || 45,
-      diabetesType: row.diabetes_type || "Diabetes Tipe 2",
-      currentWeight: Number(row.current_weight) || 70,
-      height: Number(row.height) || 165,
-      targetSugarFasting: Number(row.target_sugar_fasting) || 100,
-      targetSugarPostPrandial: Number(row.target_sugar_post_prandial) || 140,
-      medicalHistory: row.medical_history || "",
-      emergencyContact: row.emergency_contact || "-",
-      lastBloodSugarLevel: row.last_blood_sugar_level || undefined,
-      lastBloodSugarContext: row.last_blood_sugar_context || undefined,
-      lastCheckDate: row.last_check_date || undefined,
-      riskStatus: row.risk_status || "Terkontrol",
-    }));
+    return data.map((row: any) => mapPatientRowToProfile(row));
   } catch (err) {
     console.warn("Error fetching patients from Supabase:", err);
     return null;

@@ -391,8 +391,10 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
           message: cloudRes.message,
         };
       } else if (
+        cloudRes.message.includes("NONAKTIF") ||
         cloudRes.message.includes("belum dikonfirmasi") ||
-        cloudRes.message.includes("Confirm email")
+        cloudRes.message.includes("Confirm email") ||
+        cloudRes.message.includes("Dashboard Supabase")
       ) {
         return {
           success: false,
