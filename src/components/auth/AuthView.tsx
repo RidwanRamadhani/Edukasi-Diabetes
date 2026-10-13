@@ -76,8 +76,10 @@ export function AuthView() {
   const [successMsg, setSuccessMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     setErrorMsg("");
     setSuccessMsg("");
 
@@ -86,14 +88,21 @@ export function AuthView() {
       return;
     }
 
-    const res = login(loginEmail, loginPassword);
-    if (res.success) {
-      setSuccessMsg(res.message);
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1200);
-    } else {
-      setErrorMsg(res.message);
+    setIsSubmitting(true);
+    try {
+      const res = await login(loginEmail, loginPassword);
+      if (res.success) {
+        setSuccessMsg(res.message);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1200);
+      } else {
+        setErrorMsg(res.message);
+        setIsSubmitting(false);
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Terjadi kendala saat memverifikasi akun.");
+      setIsSubmitting(false);
     }
   };
 
@@ -357,10 +366,20 @@ export function AuthView() {
 
               <button
                 type="submit"
-                className="w-full mt-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer transition-transform hover:scale-[1.01]"
+                disabled={isSubmitting}
+                className="w-full mt-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white font-bold text-xs uppercase tracking-wider shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 cursor-pointer transition-transform hover:scale-[1.01]"
               >
-                <LogIn className="w-4 h-4" />
-                <span>Masuk ke Akun Pasien</span>
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Memverifikasi Akun...</span>
+                  </>
+                ) : (
+                  <>
+                    <LogIn className="w-4 h-4" />
+                    <span>Masuk ke Akun Pasien</span>
+                  </>
+                )}
               </button>
 
               <div className="pt-2 text-center">

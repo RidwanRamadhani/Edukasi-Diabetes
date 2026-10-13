@@ -78,10 +78,12 @@ export async function syncPatientToSupabase(
       return { success: false, message: error.message };
     }
 
-    // 2. Non-blocking Supabase Auth registration in background (does not delay patient persistence)
+    // 2. Supabase Auth registration
+    let authUserId: string | null = null;
+    let authNote: string = "";
     if (password) {
-      supabase.auth
-        .signUp({
+      try {
+        const { data: authData, error: authErr } = await supabase.auth.signUp({
           email: patient.email.toLowerCase(),
           password: password,
           options: {
@@ -91,24 +93,37 @@ export async function syncPatientToSupabase(
               age: patient.age,
             },
           },
-        })
-        .then(({ data: authData, error: authErr }) => {
-          if (!authErr && authData?.user) {
-            supabase
-              .from("patients")
-              .update({ auth_user_id: authData.user.id })
-              .eq("email", patient.email.toLowerCase())
-              .then(() => {});
-          }
-        })
-        .catch((err) => {
-          console.warn("Supabase Auth background sign up note:", err);
         });
+
+        if (authErr) {
+          console.warn("Supabase Auth signUp note:", authErr.message);
+          authNote = authErr.message;
+        } else if (authData?.user) {
+          authUserId = authData.user.id;
+          if (!authData.session) {
+            authNote = "Email belum dikonfirmasi di Supabase.";
+          }
+        }
+      } catch (authEx: any) {
+        console.warn("Supabase Auth background sign up exception:", authEx);
+        authNote = authEx?.message || "";
+      }
+    }
+
+    if (authUserId) {
+      patientRow.auth_user_id = authUserId;
+      // Also update the row if it was already upserted
+      await supabase
+        .from("patients")
+        .update({ auth_user_id: authUserId })
+        .eq("email", patient.email.toLowerCase());
     }
 
     return {
       success: true,
-      message: "Data pasien berhasil disimpan di database cloud Supabase!",
+      message: authNote
+        ? `Data pasien tersimpan di cloud Supabase. (${authNote})`
+        : "Data pasien berhasil terdaftar dan tersimpan di database cloud Supabase!",
       data,
     };
   } catch (err: any) {
@@ -116,6 +131,119 @@ export async function syncPatientToSupabase(
     return {
       success: false,
       message: err.message || "Gagal menghubungkan ke Supabase.",
+    };
+  }
+}
+
+/**
+ * Signs in a patient using Supabase Auth and hydrates their UserProfile from public.patients.
+ */
+export async function loginPatientWithSupabase(
+  email: string,
+  password: string
+): Promise<{ success: boolean; message: string; profile?: UserProfile }> {
+  if (!isSupabaseConfigured()) {
+    return {
+      success: false,
+      message: "Supabase belum terkonfigurasi.",
+    };
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+
+  try {
+    // 1. Attempt Supabase Auth signInWithPassword
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email: cleanEmail,
+      password: password,
+    });
+
+    if (authError) {
+      console.warn("Supabase signInWithPassword note:", authError.message);
+      if (authError.message.toLowerCase().includes("email not confirmed")) {
+        return {
+          success: false,
+          message:
+            "Akun terdaftar, namun email belum dikonfirmasi di Supabase. Silakan periksa inbox/spam email Anda, atau matikan opsi 'Confirm email' di Dashboard Supabase agar bisa langsung login.",
+        };
+      }
+      return {
+        success: false,
+        message: authError.message.includes("Invalid login credentials")
+          ? "Email atau kata sandi tidak cocok. Pastikan email dan sandi Anda sudah benar."
+          : authError.message,
+      };
+    }
+
+    if (!authData?.user) {
+      return {
+        success: false,
+        message: "Gagal memverifikasi akun pengguna di Supabase.",
+      };
+    }
+
+    // 2. Fetch patient record from public.patients table
+    const { data: patientRow, error: patientError } = await supabase
+      .from("patients")
+      .select("*")
+      .eq("email", cleanEmail)
+      .maybeSingle();
+
+    if (patientError) {
+      console.warn("Error fetching patient profile from Supabase:", patientError.message);
+    }
+
+    let profile: UserProfile;
+
+    if (patientRow) {
+      profile = {
+        id: patientRow.id,
+        name: patientRow.name,
+        email: patientRow.email,
+        phone: patientRow.phone || undefined,
+        gender: patientRow.gender || "Laki-laki",
+        age: patientRow.age || 45,
+        diabetesType: patientRow.diabetes_type || "Pencegahan Primer",
+        currentWeight: Number(patientRow.current_weight) || 70,
+        height: Number(patientRow.height) || 165,
+        targetSugarFasting: Number(patientRow.target_sugar_fasting) || 100,
+        targetSugarPostPrandial: Number(patientRow.target_sugar_post_prandial) || 140,
+        medicalHistory: patientRow.medical_history || "",
+        emergencyContact: patientRow.emergency_contact || "-",
+        lastBloodSugarLevel: patientRow.last_blood_sugar_level || undefined,
+        lastBloodSugarContext: patientRow.last_blood_sugar_context || undefined,
+        lastCheckDate: patientRow.last_check_date || undefined,
+        riskStatus: patientRow.risk_status || "Terkontrol",
+      };
+    } else {
+      profile = {
+        id: `patient-${Date.now()}`,
+        name: authData.user.user_metadata?.name || cleanEmail.split("@")[0],
+        email: cleanEmail,
+        diabetesType: "Pencegahan Primer",
+        gender: "Laki-laki",
+        age: 35,
+        currentWeight: 65,
+        height: 165,
+        targetSugarFasting: 95,
+        targetSugarPostPrandial: 130,
+        medicalHistory: "Pengguna DIASERA terdaftar melalui Supabase Cloud.",
+        emergencyContact: "-",
+        riskStatus: "Terkontrol",
+      };
+      await syncPatientToSupabase(profile);
+    }
+
+    return {
+      success: true,
+      message: `Selamat datang kembali, ${profile.name}! Sesi berhasil disinkronkan dari Cloud Supabase.`,
+      profile,
+    };
+  } catch (err: any) {
+    console.error("Exception in loginPatientWithSupabase:", err);
+    return {
+      success: false,
+      message: err?.message || "Terjadi kendala saat menghubungkan ke cloud Supabase.",
     };
   }
 }

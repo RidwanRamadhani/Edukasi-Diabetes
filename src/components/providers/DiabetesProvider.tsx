@@ -29,6 +29,8 @@ import {
   syncPatientToSupabase,
   fetchPatientsFromSupabase,
   insertBloodSugarLogToSupabase,
+  loginPatientWithSupabase,
+  supabase,
 } from "@/lib/supabase";
 
 const STORAGE_KEYS = {
@@ -69,7 +71,7 @@ interface DiabetesContextType {
   isLoaded: boolean;
   isAuthenticated: boolean;
   registeredUsers: RegisteredAccount[];
-  login: (email: string, password: string) => { success: boolean; message: string };
+  login: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
   register: (userData: {
     name: string;
     email: string;
@@ -366,8 +368,40 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Authentication: Patient Login
-  const login = (email: string, password: string) => {
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; message: string }> => {
     const cleanEmail = email.trim().toLowerCase();
+
+    // 1. Prioritaskan autentikasi Cloud Supabase (agar akun lintas perangkat HP & Laptop tersinkronisasi)
+    if (isSupabaseConfigured()) {
+      const cloudRes = await loginPatientWithSupabase(cleanEmail, password);
+      if (cloudRes.success && cloudRes.profile) {
+        setProfile(cloudRes.profile);
+        setIsAuthenticated(true);
+
+        try {
+          localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify(cloudRes.profile));
+          localStorage.setItem(STORAGE_KEYS.AUTH_SESSION, JSON.stringify(true));
+        } catch {}
+
+        return {
+          success: true,
+          message: cloudRes.message,
+        };
+      } else if (
+        cloudRes.message.includes("belum dikonfirmasi") ||
+        cloudRes.message.includes("Confirm email")
+      ) {
+        return {
+          success: false,
+          message: cloudRes.message,
+        };
+      }
+    }
+
+    // 2. Fallback ke akun lokal (offline / mock)
     const user = registeredUsers.find(
       (u) => u.email.toLowerCase() === cleanEmail && u.password === password
     );
@@ -390,7 +424,7 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
 
     return {
       success: true,
-      message: `Selamat datang kembali, ${user.name}! Sesi berhasil diaktifkan.`,
+      message: `Selamat datang kembali, ${user.name}! Sesi lokal berhasil diaktifkan.`,
     };
   };
 
@@ -494,6 +528,9 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
   // Authentication: Patient Logout
   const logout = () => {
     setIsAuthenticated(false);
+    if (isSupabaseConfigured()) {
+      supabase.auth.signOut().catch(() => {});
+    }
     try {
       localStorage.setItem(STORAGE_KEYS.AUTH_SESSION, JSON.stringify(false));
     } catch {}
