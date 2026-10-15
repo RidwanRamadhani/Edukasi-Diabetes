@@ -119,7 +119,7 @@ export function Navbar() {
                   </Link>
                 );
               })
-            ) : isAuthenticated ? (
+            ) : (
               patientNavItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
@@ -138,11 +138,6 @@ export function Navbar() {
                   </Link>
                 );
               })
-            ) : (
-              <div className="flex items-center gap-2 text-xs text-slate-600 bg-slate-50 border border-slate-200/80 px-3.5 py-1.5 rounded-full">
-                <Lock className="w-3.5 h-3.5 text-amber-600" />
-                <span>Portal Terkunci • Masuk akun pasien atau dokter di bawah</span>
-              </div>
             )}
           </nav>
 
@@ -342,29 +337,54 @@ export function Navbar() {
               })}
             </>
           ) : (
-            <div className="p-4 space-y-3">
-              <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-center gap-2">
-                <Lock className="w-4 h-4 text-amber-700 shrink-0" />
-                <span>Silakan masuk atau daftar akun baru untuk membuka menu navigasi.</span>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
+            <div className="p-2 space-y-2">
+              <div className="grid grid-cols-2 gap-2 mb-2">
                 <Link
                   href="/auth"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs"
+                  className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-xs"
                 >
-                  <LogIn className="w-4 h-4" />
+                  <LogIn className="w-3.5 h-3.5" />
                   <span>Portal Pasien</span>
                 </Link>
                 <Link
                   href="/auth/doctor-login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-2.5 bg-teal-50 hover:bg-teal-100 border border-teal-300 text-teal-800 text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs"
+                  className="w-full py-2 bg-teal-50 hover:bg-teal-100 border border-teal-300 text-teal-800 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-xs"
                 >
-                  <Stethoscope className="w-4 h-4 text-teal-700" />
+                  <Stethoscope className="w-3.5 h-3.5 text-teal-700" />
                   <span>Portal Dokter</span>
                 </Link>
               </div>
+
+              <Link
+                href="/activity-tracker"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 w-full py-2 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs sm:text-sm font-bold shadow-xs transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Catat Hari Ini</span>
+              </Link>
+
+              {patientNavItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={`mobile-unauth-${item.href}`}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-emerald-600 text-white font-semibold"
+                        : "text-slate-700 hover:bg-slate-100"
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-slate-500"}`} />
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>

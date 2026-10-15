@@ -21,8 +21,16 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // If already on auth pages, always render them
-  if (pathname === "/auth" || pathname === "/auth/doctor-login") {
+  // If already on auth pages or public feature pages, always render them
+  if (
+    pathname === "/auth" ||
+    pathname === "/auth/doctor-login" ||
+    pathname.startsWith("/progres-saya") ||
+    pathname.startsWith("/education") ||
+    pathname.startsWith("/risk-check") ||
+    pathname.startsWith("/calculator") ||
+    pathname.startsWith("/meals")
+  ) {
     return <>{children}</>;
   }
 
