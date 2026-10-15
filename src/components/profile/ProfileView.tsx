@@ -18,8 +18,10 @@ import {
   Footprints,
   ShieldCheck,
   Sparkles,
+  LogOut,
 } from "lucide-react";
 import { UserProfile, HealthGoal } from "@/types";
+import { useDiabetesStore } from "@/lib/storage";
 
 interface ProfileViewProps {
   profile: UserProfile;
@@ -27,6 +29,7 @@ interface ProfileViewProps {
 }
 
 export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
+  const { logout } = useDiabetesStore();
   // Form fields state
   const [name, setName] = useState(profile.name || "");
   const [email, setEmail] = useState(profile.email || "");
@@ -196,20 +199,32 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
           </div>
         </div>
 
-        {/* BMI Metric Card */}
-        <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-right w-full sm:w-auto">
-          <span className="text-[10px] uppercase font-bold text-slate-400">
-            Indeks Massa Tubuh (BMI)
-          </span>
-          <div className="flex items-baseline justify-end gap-1.5 mt-0.5">
-            <span className="text-2xl font-black text-slate-900">{bmi}</span>
-            <span className="text-xs text-slate-500 font-semibold">kg/m²</span>
+        {/* BMI Metric Card & Action */}
+        <div className="flex flex-col sm:items-end gap-2.5 w-full sm:w-auto shrink-0">
+          <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-right w-full sm:w-auto">
+            <span className="text-[10px] uppercase font-bold text-slate-400">
+              Indeks Massa Tubuh (BMI)
+            </span>
+            <div className="flex items-baseline justify-end gap-1.5 mt-0.5">
+              <span className="text-2xl font-black text-slate-900">{bmi}</span>
+              <span className="text-xs text-slate-500 font-semibold">kg/m²</span>
+            </div>
+            <span
+              className={`text-[10px] font-bold px-2 py-0.5 rounded-full border inline-block mt-1 ${bmiCat.color}`}
+            >
+              {bmiCat.label}
+            </span>
           </div>
-          <span
-            className={`text-[10px] font-bold px-2 py-0.5 rounded-full border inline-block mt-1 ${bmiCat.color}`}
+
+          <button
+            type="button"
+            onClick={() => logout()}
+            className="w-full sm:w-auto px-3.5 py-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
+            title="Keluar dari akun pasien"
           >
-            {bmiCat.label}
-          </span>
+            <LogOut className="w-3.5 h-3.5 text-rose-600" />
+            <span>Keluar dari Akun</span>
+          </button>
         </div>
       </div>
 
@@ -480,11 +495,16 @@ export function ProfileView({ profile, onUpdateProfile }: ProfileViewProps) {
           </div>
         </div>
 
-        {/* Save Button */}
+        {/* Save & Logout Buttons */}
         <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-[11px] text-slate-500 text-center sm:text-left">
-            Data tersimpan secara aman dan sinkron untuk pemantauan gaya hidup sehat mandiri.
-          </p>
+          <button
+            type="button"
+            onClick={() => logout()}
+            className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors"
+          >
+            <LogOut className="w-4 h-4 text-rose-600" />
+            <span>Keluar dari Akun</span>
+          </button>
 
           <button
             type="submit"

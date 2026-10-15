@@ -26,14 +26,18 @@ import { useState } from "react";
 import { useDiabetesStore } from "@/lib/storage";
 
 const patientNavItems = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Progres Saya", href: "/progres-saya", icon: TrendingUp },
-  { name: "Pantau Aktivitas", href: "/activity-tracker", icon: Activity },
-  { name: "Edukasi Interaktif", href: "/education", icon: BookOpen },
-  { name: "Cek Risiko DM", href: "/risk-check", icon: ShieldCheck },
-  { name: "Kalkulator Glikemik", href: "/calculator", icon: Calculator },
-  { name: "Menu Sehat", href: "/meals", icon: CalendarDays },
-  { name: "Profil Saya", href: "/profile", icon: UserCheck },
+  { name: "Dashboard", shortName: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Progres Saya", shortName: "Progres", href: "/progres-saya", icon: TrendingUp },
+  { name: "Pantau Aktivitas", shortName: "Aktivitas", href: "/activity-tracker", icon: Activity },
+  { name: "Edukasi Interaktif", shortName: "Edukasi", href: "/education", icon: BookOpen },
+  { name: "Cek Risiko DM", shortName: "Cek Risiko", href: "/risk-check", icon: ShieldCheck },
+  { name: "Kalkulator Glikemik", shortName: "Kalkulator", href: "/calculator", icon: Calculator },
+  { name: "Menu Sehat", shortName: "Menu Sehat", href: "/meals", icon: CalendarDays },
+];
+
+const mobilePatientNavItems = [
+  ...patientNavItems,
+  { name: "Profil Saya", shortName: "Profil", href: "/profile", icon: UserCheck },
 ];
 
 const doctorNavItems = [
@@ -67,8 +71,8 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-emerald-100 bg-white/95 backdrop-blur-md shadow-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+      <div className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between gap-2">
           {/* Logo & Brand */}
           <Link
             href={
@@ -78,28 +82,28 @@ export function Navbar() {
                 ? "/dashboard"
                 : "/auth"
             }
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-2 sm:gap-3 group shrink-0"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-              <HeartPulse className="w-6 h-6 animate-pulse" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform shrink-0">
+              <HeartPulse className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-xl text-slate-900 tracking-tight">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="font-bold text-lg sm:text-xl text-slate-900 tracking-tight">
                   DIA<span className="text-emerald-600">SERA</span>
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 hidden md:inline-block">
                   {isDoctorAuthenticated ? "Portal Dokter" : "Pencegahan & Pengendalian"}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-700 font-medium hidden sm:block">
+              <p className="text-[10px] sm:text-[11px] text-slate-700 font-medium hidden 2xl:block">
                 Edukasi Interaktif &amp; Pantau Hidup Sehat
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1">
             {isDoctorAuthenticated ? (
               doctorNavItems.map((item, idx) => {
                 const Icon = item.icon;
@@ -108,13 +112,13 @@ export function Navbar() {
                   <Link
                     key={`${item.name}-${idx}`}
                     href={item.href}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    className={`flex items-center gap-1.5 px-2 xl:px-3 py-1.5 xl:py-2 rounded-lg text-xs xl:text-sm font-medium transition-all ${
                       isActive
                         ? "bg-teal-50 text-teal-800 font-semibold shadow-xs"
                         : "text-slate-600 hover:text-teal-700 hover:bg-slate-50"
                     }`}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? "text-teal-700" : "text-slate-500"}`} />
+                    <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 ${isActive ? "text-teal-700" : "text-slate-500"}`} />
                     <span>{item.name}</span>
                   </Link>
                 );
@@ -127,14 +131,16 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                    className={`flex items-center gap-1.5 px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-medium transition-all ${
                       isActive
                         ? "bg-emerald-50 text-emerald-700 font-semibold shadow-xs"
                         : "text-slate-600 hover:text-emerald-600 hover:bg-slate-50"
                     }`}
+                    title={item.name}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? "text-emerald-600" : "text-slate-500"}`} />
-                    <span>{item.name}</span>
+                    <Icon className={`w-3.5 h-3.5 xl:w-4 xl:h-4 ${isActive ? "text-emerald-600" : "text-slate-500"}`} />
+                    <span className="hidden xl:inline">{item.name}</span>
+                    <span className="inline xl:hidden">{item.shortName}</span>
                   </Link>
                 );
               })
@@ -142,30 +148,30 @@ export function Navbar() {
           </nav>
 
           {/* User Profile Mini Badge & Auth Status */}
-          <div className="hidden sm:flex items-center gap-2.5">
+          <div className="hidden sm:flex items-center gap-2 shrink-0">
             <Link
               href="/activity-tracker"
-              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold shadow-xs transition-colors shrink-0"
+              className="hidden 2xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold shadow-xs transition-colors shrink-0"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span>+ Catat Hari Ini</span>
+              <span>Catat Hari Ini</span>
             </Link>
 
             {isDoctorAuthenticated && activeDoctor ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 xl:gap-2 shrink-0">
                 <Link
                   href="/doctor-dashboard"
-                  className="flex items-center gap-2.5 pl-3 pr-4 py-1.5 rounded-full border border-teal-200 bg-teal-50/80 hover:bg-teal-100/70 transition-all text-left"
+                  className="flex items-center gap-2 pl-2.5 pr-3 py-1 rounded-full border border-teal-200 bg-teal-50/80 hover:bg-teal-100/70 transition-all text-left shrink-0"
                 >
-                  <div className="w-8 h-8 rounded-full bg-teal-700 text-white flex items-center justify-center text-xs font-bold shadow-xs">
-                    <Stethoscope className="w-4 h-4" />
+                  <div className="w-7 h-7 rounded-full bg-teal-700 text-white flex items-center justify-center text-xs font-bold shadow-xs shrink-0">
+                    <Stethoscope className="w-3.5 h-3.5" />
                   </div>
-                  <div>
-                    <p className="text-xs font-bold text-teal-950 leading-tight">
+                  <div className="hidden xl:block max-w-[120px] truncate">
+                    <p className="text-xs font-bold text-teal-950 leading-tight truncate">
                       {activeDoctor.name}
                     </p>
-                    <p className="text-[10px] text-teal-700 font-medium">
-                      {activeDoctor.specialization} • Dashboard
+                    <p className="text-[10px] text-teal-700 font-medium truncate">
+                      {activeDoctor.specialization}
                     </p>
                   </div>
                 </Link>
@@ -173,48 +179,52 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={() => doctorLogout()}
-                  className="p-2 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer"
                   title="Keluar dari sesi dokter"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-3.5 h-3.5 text-rose-600" />
+                  <span>Keluar</span>
                 </button>
               </div>
             ) : isAuthenticated ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 xl:gap-2 shrink-0">
                 <Link
                   href="/profile"
-                  className="flex items-center gap-2.5 pl-3 pr-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 hover:bg-emerald-50/50 hover:border-emerald-200 transition-all text-left"
+                  className="flex items-center gap-2 pl-2 pr-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 hover:bg-emerald-50/60 hover:border-emerald-300 transition-all text-left shrink-0"
+                  title="Buka Profil Saya"
                 >
-                  <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+                  <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shadow-xs shrink-0">
                     {initials}
                   </div>
-                  <div>
-                    <p className="text-xs font-semibold text-slate-800 leading-tight">{profile.name}</p>
-                    <p className="text-[10px] text-emerald-600 font-medium">{profile.healthGoal || "Pencegahan Primer"} • Terpantau</p>
+                  <div className="hidden xl:block max-w-[110px] truncate">
+                    <p className="text-xs font-semibold text-slate-800 leading-tight truncate">{profile.name}</p>
+                    <p className="text-[10px] text-emerald-600 font-medium truncate">{profile.healthGoal || "Pencegahan Primer"}</p>
                   </div>
                 </Link>
 
+                {/* Tombol Keluar Pasien - Selalu Terlihat Jelas & Tidak Terpotong di Layar Laptop */}
                 <button
                   type="button"
                   onClick={() => logout()}
-                  className="p-2 rounded-full text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-                  title="Keluar dari akun saat ini"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-800 text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer"
+                  title="Keluar dari akun pasien"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-3.5 h-3.5 text-rose-600" />
+                  <span>Keluar</span>
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 xl:gap-2 shrink-0">
                 <Link
                   href="/auth"
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-colors shrink-0"
                 >
                   <LogIn className="w-3.5 h-3.5" />
-                  <span>Masuk Pasien</span>
+                  <span>Masuk</span>
                 </Link>
                 <Link
                   href="/auth/doctor-login"
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-teal-300 bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-teal-300 bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold transition-colors shrink-0"
                 >
                   <Stethoscope className="w-3.5 h-3.5 text-teal-700" />
                   <span>Portal Dokter</span>
@@ -316,7 +326,7 @@ export function Navbar() {
                 <span>+ Catat Hari Ini</span>
               </Link>
 
-              {patientNavItems.map((item) => {
+              {mobilePatientNavItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
                 return (
@@ -366,7 +376,7 @@ export function Navbar() {
                 <span>+ Catat Hari Ini</span>
               </Link>
 
-              {patientNavItems.map((item) => {
+              {mobilePatientNavItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
                 return (
