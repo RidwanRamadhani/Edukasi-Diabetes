@@ -1,0 +1,32 @@
+const sharp = require('sharp');
+const fs = require('fs');
+
+const svg = `
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="50%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="url(#grad)" />
+  <g transform="translate(106, 90) scale(12.5)" stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" />
+    <path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27" />
+  </g>
+  <text x="256" y="425" font-family="Arial, sans-serif" font-size="56" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="3">DIASERA</text>
+</svg>
+`;
+
+fs.writeFileSync('public/icon.svg', svg.trim());
+
+Promise.all([
+  sharp(Buffer.from(svg)).resize(192, 192).png().toFile('public/icon-192.png'),
+  sharp(Buffer.from(svg)).resize(512, 512).png().toFile('public/icon-512.png'),
+  sharp(Buffer.from(svg)).resize(180, 180).png().toFile('public/apple-touch-icon.png')
+]).then(() => {
+  console.log('PWA icons created successfully!');
+}).catch(err => {
+  console.error('Error generating icons:', err);
+});
