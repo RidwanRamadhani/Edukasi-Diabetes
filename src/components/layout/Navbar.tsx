@@ -19,14 +19,17 @@ import {
   Lock,
   Stethoscope,
   Users,
+  TrendingUp,
+  Plus,
 } from "lucide-react";
 import { useState } from "react";
 import { useDiabetesStore } from "@/lib/storage";
 
 const patientNavItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Edukasi Interaktif", href: "/education", icon: BookOpen },
+  { name: "Progres Saya", href: "/progres-saya", icon: TrendingUp },
   { name: "Pantau Aktivitas", href: "/activity-tracker", icon: Activity },
+  { name: "Edukasi Interaktif", href: "/education", icon: BookOpen },
   { name: "Cek Risiko DM", href: "/risk-check", icon: ShieldCheck },
   { name: "Kalkulator Glikemik", href: "/calculator", icon: Calculator },
   { name: "Menu Sehat", href: "/meals", icon: CalendarDays },
@@ -145,6 +148,14 @@ export function Navbar() {
 
           {/* User Profile Mini Badge & Auth Status */}
           <div className="hidden sm:flex items-center gap-2.5">
+            <Link
+              href="/activity-tracker"
+              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold shadow-xs transition-colors shrink-0"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>+ Catat Hari Ini</span>
+            </Link>
+
             {isDoctorAuthenticated && activeDoctor ? (
               <div className="flex items-center gap-2">
                 <Link
@@ -300,6 +311,15 @@ export function Navbar() {
                   Keluar
                 </button>
               </div>
+
+              <Link
+                href="/activity-tracker"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 w-full py-2.5 px-4 mb-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-sm font-bold shadow-xs transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Catat Hari Ini</span>
+              </Link>
 
               {patientNavItems.map((item) => {
                 const Icon = item.icon;

@@ -84,6 +84,8 @@ export interface DailyHabitLog {
   veggieFruitPortions: number; // Target 3-5 porsi
   sleepHours: number; // Target 7-8 jam
   lowSugarSaltFat: boolean; // Pembatasan konsumsi gula, garam, lemak tinggi
+  sugaryDrinkPortions?: number; // Target 0 porsi / pembatasan minuman manis
+  dietCategory?: "balanced" | "controlled" | "high_sugar"; // Pola Makan 3J
   notes?: string;
   habitScore: number; // 0 - 100%
   createdAt: string;
