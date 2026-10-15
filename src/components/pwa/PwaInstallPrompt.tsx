@@ -15,6 +15,11 @@ export function PwaInstallPrompt() {
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
 
   useEffect(() => {
+    // Register Service Worker for offline PWA support
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(console.error);
+    }
+
     // Check if app is already running in standalone PWA / WebAPK mode
     if (
       window.matchMedia("(display-mode: standalone)").matches ||

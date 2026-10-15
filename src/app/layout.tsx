@@ -53,6 +53,23 @@ export default function RootLayout({
       lang="id"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').then(function(reg) {
+                    console.log('DIASERA SW registered:', reg.scope);
+                  }).catch(function(err) {
+                    console.error('DIASERA SW registration error:', err);
+                  });
+                });
+              }
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-slate-50/60 text-slate-800 font-sans">
         <DiabetesProvider>
           <Suspense fallback={null}>

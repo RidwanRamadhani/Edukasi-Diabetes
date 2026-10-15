@@ -19,14 +19,45 @@ const svg = `
 </svg>
 `;
 
+const desktopSvg = `
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#f8fafc" />
+  <rect width="1280" height="72" fill="#ffffff" />
+  <rect x="60" y="20" width="160" height="32" rx="8" fill="#0f766e" />
+  <rect x="60" y="110" width="1160" height="260" rx="24" fill="#0f766e" />
+  <text x="100" y="200" font-family="Arial, sans-serif" font-size="38" font-weight="900" fill="#ffffff">DIASERA Health</text>
+  <text x="100" y="245" font-family="Arial, sans-serif" font-size="20" fill="#ccfbf1">Edukasi Interaktif &amp; Pemantauan Perilaku Hidup Sehat</text>
+  <rect x="60" y="400" width="270" height="180" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="355" y="400" width="270" height="180" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="650" y="400" width="270" height="180" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="945" y="400" width="270" height="180" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+</svg>
+`;
+
+const mobileSvg = `
+<svg width="720" height="1280" viewBox="0 0 720 1280" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="1280" fill="#f8fafc" />
+  <rect width="720" height="88" fill="#ffffff" />
+  <rect x="40" y="24" width="180" height="40" rx="10" fill="#0f766e" />
+  <rect x="30" y="120" width="660" height="320" rx="24" fill="#0f766e" />
+  <text x="60" y="220" font-family="Arial, sans-serif" font-size="36" font-weight="900" fill="#ffffff">DIASERA</text>
+  <text x="60" y="270" font-family="Arial, sans-serif" font-size="18" fill="#ccfbf1">Edukasi &amp; Pemantauan Diabetes</text>
+  <rect x="30" y="470" width="660" height="150" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="30" y="640" width="660" height="150" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="30" y="810" width="660" height="150" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+</svg>
+`;
+
 fs.writeFileSync('public/icon.svg', svg.trim());
 
 Promise.all([
   sharp(Buffer.from(svg)).resize(192, 192).png().toFile('public/icon-192.png'),
   sharp(Buffer.from(svg)).resize(512, 512).png().toFile('public/icon-512.png'),
-  sharp(Buffer.from(svg)).resize(180, 180).png().toFile('public/apple-touch-icon.png')
+  sharp(Buffer.from(svg)).resize(180, 180).png().toFile('public/apple-touch-icon.png'),
+  sharp(Buffer.from(desktopSvg)).resize(1280, 720).png().toFile('public/screenshot-desktop.png'),
+  sharp(Buffer.from(mobileSvg)).resize(720, 1280).png().toFile('public/screenshot-mobile.png')
 ]).then(() => {
-  console.log('PWA icons created successfully!');
+  console.log('PWA icons and screenshots created successfully!');
 }).catch(err => {
-  console.error('Error generating icons:', err);
+  console.error('Error generating assets:', err);
 });
