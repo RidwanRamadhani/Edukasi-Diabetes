@@ -54,19 +54,34 @@ export default function EducationPage() {
       <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
         {/* Category Pills */}
         <div className="flex flex-wrap gap-1.5">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1.5 text-xs rounded-xl font-semibold transition-all cursor-pointer ${
-                activeCategory === cat
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-              }`}
-            >
-              {cat === "ALL" ? "Semua Kategori" : cat}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const count =
+              cat === "ALL"
+                ? articles.length
+                : articles.filter((a) => a.category === cat).length;
+            return (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-3 py-1.5 text-xs rounded-xl font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  activeCategory === cat
+                    ? "bg-emerald-600 text-white shadow-xs"
+                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+                }`}
+              >
+                <span>{cat === "ALL" ? "Semua Kategori" : cat}</span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                    activeCategory === cat
+                      ? "bg-white/25 text-white"
+                      : "bg-slate-100 text-slate-600"
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Search */}

@@ -341,4 +341,288 @@ Pemeriksaan Gula Darah Mandiri (Self-Monitoring of Blood Glucose / SMBG) menggun
       reviewedAt: "2026-10-04T16:45:00Z",
     },
   },
+  {
+    id: "art-kump-9",
+    title: "5 Tips agar Terhindar dari Risiko Diabetes Menurut Ahli Gizi",
+    category: "Nutrisi & Diet",
+    summary: "Ahli gizi klinis membagikan 5 tips utama mencegah diabetes melitus tipe 2: perbanyak serat larut air, pilih karbohidrat kompleks indeks glikemik rendah, batasi makanan ultra-proses, dan konsisten jam makan.",
+    content: `
+### Kiat Pencegahan Primer Diabetes dari Perspektif Ahli Gizi
+Diabetes Melitus Tipe 2 tidak terjadi dalam semalam. Penyakit ini berkembang secara perlahan akibat beban glukosa kronis yang membuat sel beta pankreas kelelahan dan sel tubuh resisten terhadap insulin. Kabar baiknya, riset membuktikan bahwa **perubahan pola makan dan nutrisi mampu menurunkan risiko diabetes hingga 60%**.
+
+Berikut 5 tips penting yang dianjurkan oleh para ahli gizi:
+
+### 1. Perbanyak Serat Larut Air (Soluble Fiber)
+- Serat larut air (seperti dalam oat, chia seed, apel, kacang merah, dan agar-agar rumput laut) membentuk gel di saluran pencernaan.
+- Gel ini memperlambat penyerapan glukosa ke aliran darah sehingga lonjakan gula darah pasca makan (*postprandial spike*) dapat diredam secara signifikan.
+- **Target:** Konsumsi minimal **25 - 30 gram serat** setiap hari.
+
+### 2. Ganti Karbohidrat Sederhana dengan Karbohidrat Kompleks
+- Hindari nasi putih berlebih, tepung terigu olahan, roti manis, dan mi instan.
+- Beralihlah ke karbohidrat kompleks dengan Indeks Glikemik (GI) rendah (&lt; 55), seperti nasi merah, jagung rebus, ubi jalar kukus, atau beras basmati.
+- Karbohidrat kompleks dipecah menjadi glukosa secara perlahan, memberikan energi yang stabil tanpa membebani pankreas.
+
+### 3. Kendalikan Ukuran Porsi (Portion Control)
+- Gunakan metode 'Piring Model T':
+  - **1/2 Piring:** Sayuran non-tepung (bayam, brokoli, labu siam, selada, kangkung).
+  - **1/4 Piring:** Protein berkualitas tinggi rendah lemak (tempe, tahu, ikan, dada ayam tanpa kulit, telur).
+  - **1/4 Piring:** Karbohidrat kompleks (nasi merah, kentang rebus beserta kulitnya).
+
+### 4. Waspadai Gula Tersembunyi (Hidden Sugar)
+- Banyak orang merasa sudah mengurangi gula karena tidak minum teh manis, namun masih sering mengonsumsi jus buah kemasan, yoghurt manis, saus salad kemasan, dan biskuit.
+- Selalu periksa label informasi nilai gizi: jika kandungan gula lebih dari **10 gram per sajian**, sebaiknya hindari atau batasi konsumsinya.
+
+### 5. Jangan Lewatkan Sarapan Sehat
+- Melewatkan sarapan sering memicu rasa lapar berlebihan pada siang hari, yang berujung pada konsumsi kalori berlebih dan 'sugar craving' di sore hari.
+    `,
+    readingTimeMinutes: 4,
+    featuredImage: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80",
+    author: "Kumparan Food & Nutrition / Ahli Gizi Klinis",
+    sourceMedia: "kumparan.com",
+    sourceUrl: "https://kumparan.com/kumparanfood/5-tips-agar-terhindar-dari-risiko-diabetes-menurut-ahli-gizi-21zR3zBPX3n",
+    createdAt: "2025-08-10T09:00:00Z",
+    doctorReview: {
+      id: "rev-kump-9",
+      articleId: "art-kump-9",
+      reviewerName: "dr. Martha Rosana, Sp.PD",
+      reviewerTitle: "Dokter Spesialis Penyakit Dalam - RSUPN Dr. Cipto Mangunkusumo",
+      strNumber: "STR-3171-4458-2023",
+      hospital: "RSUPN Dr. Cipto Mangunkusumo Jakarta",
+      reviewNotes: "Tips nutrisi preventif yang sangat aplikatif. Pemilihan karbohidrat kompleks dengan serat tinggi terbukti menjaga glukosa postprandial stabil dan mencegah resistensi insulin sejak dini.",
+      approvalStatus: "Approved",
+      reviewedAt: "2025-08-11T14:00:00Z",
+    },
+  },
+  {
+    id: "art-kump-10",
+    title: "Cara Mencegah Diabetes: Hitung Asupan Kalori dan Jadilah Smart Eater",
+    category: "Nutrisi & Diet",
+    summary: "Kunci utama pencegahan diabetes tipe 2 adalah mencegah kelebihan kalori harian yang memicu penumpukan lemak viseral. Pelajari rumus BMR, defisit kalori sehat, dan cara membaca nutrition facts.",
+    content: `
+### Mengapa Menghitung Kalori Krusial dalam Mencegah Diabetes?
+Banyak orang mengira diabetes hanya disebabkan oleh makan gula. Padahal, faktor biologis terbesar terjadinya resistensi insulin adalah **penumpukan lemak perut (lemak viseral)** akibat surplus kalori harian yang terjadi terus-menerus selama berbulan-bulan atau bertahun-tahun.
+
+Saat lemak viseral menumpuk di sekitar hati dan pankreas, organ tersebut kehilangan kemampuan merespons hormon insulin dengan baik.
+
+### Menghitung Kebutuhan Kalori Harian (Basal Metabolic Rate):
+- Rata-rata pria dewasa sehat membutuhkan sekitar **2.000 - 2.200 kkal/hari**.
+- Rata-rata wanita dewasa sehat membutuhkan sekitar **1.600 - 1.800 kkal/hari**.
+- Jika Anda memiliki berat badan berlebih (BMI &gt; 25), targetkan defisit kalori moderat sebesar **300 - 500 kkal per hari** untuk menurunkan berat badan 0.5 kg per minggu.
+
+### Langkah Menjadi 'Smart Eater':
+1. **Pahami 'Density' Kalori Makanan**:
+   - Satu mangkok sayur bening bayam hanya mengandung sekitar 40 kkal, namun sangat mengenyangkan karena volume serat dan airnya.
+   - Sebaliknya, satu potong gorengan bakwan bisa mengandung hingga 150-200 kkal dengan indeks glikemik tinggi.
+2. **Gunakan Rumus Membaca Informasi Nilai Gizi**:
+   - Cek **Jumlah Sajian per Kemasan**: Jika kemasan berisi 2 sajian dan tertera 200 kkal, maka menghabiskan seluruh kemasan berarti Anda memasukkan 400 kkal.
+   - Perhatikan gram karbohidrat total dan gula tambahan.
+3. **Makan Perlahan (Mindful Eating)**:
+   - Butuh waktu sekitar **20 menit** bagi sinyal hormon leptin dari lambung untuk sampai ke otak memberi tahu bahwa tubuh sudah kenyang.
+   - Makan terlalu cepat sering membuat kita makan berlebihan sebelum rasa kenyang disadari.
+    `,
+    readingTimeMinutes: 5,
+    featuredImage: "https://images.unsplash.com/photo-1505576399279-565b52d4ac71?auto=format&fit=crop&w=800&q=80",
+    author: "Kumparan Health & Food",
+    sourceMedia: "kumparan.com",
+    sourceUrl: "https://kumparan.com/kumparanfood/cara-mencegah-diabetes-hitung-asupan-kalori-1sFiRERXtyJ",
+    createdAt: "2025-06-22T08:15:00Z",
+    doctorReview: {
+      id: "rev-kump-10",
+      articleId: "art-kump-10",
+      reviewerName: "dr. Handoko Santoso, Sp.PD, KEMD",
+      reviewerTitle: "Dokter Spesialis Penyakit Dalam - Konsultan Endokrin, Metabolik & Diabetes",
+      strNumber: "STR-3171-8892-2024",
+      hospital: "RS Pusat Jantung dan Endokrin Nasional",
+      reviewNotes: "Menjadi smart eater dengan menghitung kalori dan membaca label kemasan adalah benteng pertahanan terbaik melawan obesitas sentral sebagai pemicu nomor satu diabetes melitus.",
+      approvalStatus: "Approved",
+      reviewedAt: "2025-06-23T11:30:00Z",
+    },
+  },
+  {
+    id: "art-kump-11",
+    title: "Yuk Ketahui Batas Konsumsi Gula, Garam, dan Lemak (GGL) Sesuai Anjuran Kemenkes",
+    category: "Nutrisi & Diet",
+    summary: "Kementerian Kesehatan RI menetapkan pedoman konsumsi harian 'G4 G1 L5': maksimal 4 sendok makan gula, 1 sendok teh garam, dan 5 sendok makan minyak/lemak untuk mencegah diabetes, hipertensi, dan dislipidemia.",
+    content: `
+### Mengenal Aturan Emas 'G4 G1 L5' Kemenkes RI
+Kementerian Kesehatan Republik Indonesia secara konsisten mengampanyekan pembatasan konsumsi **Gula, Garam, dan Lemak (GGL)** guna menekan lonjakan angka penyakit tidak menular (PTM), khususnya diabetes melitus, penyakit jantung koroner, dan stroke.
+
+Untuk memudahkan masyarakat mengingat takaran aman harian per orang, Kemenkes merumuskan pedoman **G4 - G1 - L5**:
+
+### 1. Gula: Maksimal 4 Sendok Makan (50 Gram) per Hari
+- Mengonsumsi gula lebih dari 50 gram per hari meningkatkan risiko diabetes melitus tipe 2 hingga **3 kali lipat**.
+- Hati-hati: Satu gelas minuman boba kekinian atau kopi susu dengan sirup pemanis rata-rata mengandung **35 hingga 48 gram gula** — hampir menghabiskan seluruh kuota harian Anda dalam satu kali minum!
+
+### 2. Garam: Maksimal 1 Sendok Teh (5 Gram / 2.000 mg Natrium) per Hari
+- Asupan garam berlebih memicu hipertensi (tekanan darah tinggi).
+- Kombinasi diabetes dan hipertensi mempercepat kerusakan nefron ginjal hingga memicu gagal ginjal kronis.
+
+### 3. Lemak/Minyak: Maksimal 5 Sendok Makan (67 Gram) per Hari
+- Lemak jenuh dan lemak trans memicu perlemakan hati (*fatty liver*) yang memperparah resistensi insulin.
+- Kurangi makanan yang digoreng rendam minyak (*deep frying*), ganti dengan metode rebus, kukus, panggang, atau tumis dengan sedikit minyak zaitun/kanola.
+
+### Tips Praktis Menjalankan G4 G1 L5 di Rumah:
+- Selalu minta 'less sugar' (25% gula atau tanpa gula tambahan) saat memesan minuman di luar rumah.
+- Jadikan air putih dingin atau infused water buah sebagai pilihan pelepas dahaga utama.
+- Gunakan rempah-rempah alami (bawang putih, kunyit, jahe, lada) untuk memperkaya rasa masakan tanpa perlu banyak garam atau penyedap berlebih.
+    `,
+    readingTimeMinutes: 4,
+    featuredImage: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
+    author: "Kumparan Food & Kemenkes RI",
+    sourceMedia: "kumparan.com",
+    sourceUrl: "https://kumparan.com/kumparanfood/yuk-ketahui-batas-konsumsi-gula-garam-dan-lemak-sesuai-anjuran-kemenkes-1vla7GyLNFl",
+    createdAt: "2025-05-18T10:30:00Z",
+    doctorReview: {
+      id: "rev-kump-11",
+      articleId: "art-kump-11",
+      reviewerName: "dr. Siti Rahmawati, Sp.PD, FINASIM",
+      reviewerTitle: "Dokter Spesialis Penyakit Dalam",
+      strNumber: "STR-3214-9901-2023",
+      hospital: "RSUD Cipto Mangunkusumo",
+      reviewNotes: "Pedoman G4 G1 L5 adalah standar baku nasional pencegahan penyakit tidak menular. Sangat disarankan dipahami dan diterapkan oleh seluruh keluarga.",
+      approvalStatus: "Approved",
+      reviewedAt: "2025-05-19T13:00:00Z",
+    },
+  },
+  {
+    id: "art-kump-12",
+    title: "Rekomendasi Olahraga Efektif untuk Cegah dan Kontrol Diabetes Tipe 2",
+    category: "Pola Hidup & Aktivitas",
+    summary: "Olahraga aerobik dan latihan beban ringan membantu memasukkan glukosa darah ke dalam sel otot tanpa memerlukan insulin melalui transporter GLUT-4. Kenali jenis, jadwal, dan durasi minimal 150 menit per minggu.",
+    content: `
+### Bagaimana Olahraga Mampu Menurunkan Gula Darah Secara Alami?
+Saat Anda berolahraga, otot-otot rangka mengalami kontraksi aktif. Kontraksi otot ini secara otomatis merangsang molekul pembawa glukosa yang disebut **GLUT-4** untuk bergerak ke permukaan membran sel otot.
+
+Artinya: **Otot dapat menyerap glukosa dari aliran darah untuk dibakar menjadi energi secara langsung tanpa bergantung pada hormon insulin!**
+
+Inilah alasan mengapa olahraga dijuluki sebagai 'obat alami paling ampuh' untuk mencegah dan mengendalikan diabetes.
+
+### Rekomendasi Olahraga Menurut Panduan PERKENI & ADA:
+1. **Olahraga Kardio / Aerobik (Minimal 150 Menit/Minggu)**:
+   - **Jalan Cepat Pagi**: 30 menit per hari, 5 kali seminggu. Lakukan dengan kecepatan di mana Anda masih bisa berbicara tetapi tidak bisa bernyanyi (*talk test*).
+   - **Bersepeda Santai**: Membakar kalori tanpa membebani sendi lutut.
+   - **Berenang**: Melibatkan seluruh kelompok otot besar tubuh dan melancarkan sirkulasi pembuluh darah.
+2. **Latihan Ketahanan / Beban Ringan (2-3 Kali/Minggu)**:
+   - Massa otot adalah tempat penampungan glukosa terbesar di tubuh (menyimpan hingga 80% glukosa pasca makan).
+   - Melatih otot dengan squat, push-up dinding, atau dumbel ringan 1-2 kg akan memperbesar 'tangki penampungan glukosa' tubuh.
+
+### 3 Aturan Aman Berolahraga:
+- Jangan berolahraga saat perut kosong total jika Anda mengonsumsi obat diabetes untuk menghindari hipoglikemia.
+- Selalu kenakan sepatu yang pas dan kaos kaki bersih untuk melindungi telapak kaki dari lecet.
+- Selingi dengan peregangan ringan dan minum cukup air putih sebelum, saat, dan sesudah berolahraga.
+    `,
+    readingTimeMinutes: 5,
+    featuredImage: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=800&q=80",
+    author: "Berita Hari Ini / kumparan.com",
+    sourceMedia: "kumparan.com",
+    sourceUrl: "https://kumparan.com/berita-hari-ini/rekomendasi-olahraga-untuk-penderita-diabetes-tipe-2-22b8HlP4JWT",
+    createdAt: "2025-09-02T07:45:00Z",
+    doctorReview: {
+      id: "rev-kump-12",
+      articleId: "art-kump-12",
+      reviewerName: "dr. Handoko Santoso, Sp.PD, KEMD",
+      reviewerTitle: "Dokter Spesialis Penyakit Dalam - Konsultan Endokrin, Metabolik & Diabetes",
+      strNumber: "STR-3171-8892-2024",
+      hospital: "RS Pusat Jantung dan Endokrin Nasional",
+      reviewNotes: "Aktivitas fisik 150 menit per minggu adalah pilar paling hemat biaya namun paling efektif untuk menaikkan sensitivitas insulin dan menurunkan HbA1c hingga 0.8%.",
+      approvalStatus: "Approved",
+      reviewedAt: "2025-09-03T10:15:00Z",
+    },
+  },
+  {
+    id: "art-kump-13",
+    title: "Kenali Gejala Prediabetes Sebelum Terlambat: Fase Emas yang Masih Bisa Sembuh Total",
+    category: "Pencegahan Komplikasi",
+    summary: "Kadar gula darah puasa 100-125 mg/dL menandakan prediabetes. Ketahui tanda awal seperti acanthosis nigricans (leher menghitam), kelelahan kronis, dan strategi pemulihan total (reversal) sebelum menjadi diabetes permanen.",
+    content: `
+### Mengapa Prediabetes Disebut Sebagai 'Fase Emas'?
+Prediabetes adalah kondisi ketika kadar gula darah seseorang sudah berada di atas batas normal, namun belum setinggi kriteria diabetes tipe 2. 
+
+Banyak orang tidak menyadari bahwa **pada fase prediabetes, kondisi metabolik tubuh masih 100% REVERSIBEL (bisa pulih normal sepenuhnya)** jika ditangani dengan tepat sebelum sel-sel pankreas mengalami kerusakan permanen.
+
+### Parameter Angka Prediabetes:
+- **Gula Darah Puasa (GDP)**: 100 – 125 mg/dL (Normal: &lt; 100 mg/dL).
+- **Gula Darah 2 Jam Pasca Makan (GD2PP)**: 140 – 199 mg/dL (Normal: &lt; 140 mg/dL).
+- **HbA1c**: 5.7% – 6.4% (Normal: &lt; 5.7%).
+
+### Gejala Samar yang Kerap Diabaikan:
+1. **Acanthosis Nigricans**: Kulit di lipatan leher bagian belakang, ketiak, atau selangkangan tampak menggelap dan menebal seperti daki yang sulit dibersihkan. Ini adalah tanda khas tingginya kadar insulin dalam darah (*hiperinsulinemia*).
+2. **Kelelahan Kronis Pasca Makan (*Food Coma*)**: Selalu merasa sangat mengantuk, lemas, dan kehilangan konsentrasi setelah mengonsumsi makanan berkarbohidrat tinggi.
+3. **Peningkatan Lemak di Perut**: Lingkar perut pria &gt; 90 cm atau wanita &gt; 80 cm.
+4. **Luka atau Memar yang Lebih Lambat Sembuh**.
+
+### 3 Langkah Membalikkan Prediabetes Menjadi Normal Kembali:
+1. **Turunkan Berat Badan 7%**: Jika berat badan Anda 70 kg, menurunkan 5 kg saja sudah cukup untuk meningkatkan sensitivitas insulin secara dramatis.
+2. **Rutin Olahraga 30 Menit/Hari**: Membakar timbunan glukosa berlebih dan mengembalikan fungsi sel beta pankreas.
+3. **Puasa Intermittent / Atur Jeda Makan**: Berikan waktu jeda istirahat 12-14 jam di malam hari tanpa asupan kalori (hanya minum air putih) agar pankreas dapat beregenerasi.
+    `,
+    readingTimeMinutes: 5,
+    featuredImage: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80",
+    author: "Kumparan Mom & Family Health",
+    sourceMedia: "kumparan.com",
+    sourceUrl: "https://kumparan.com/kumparanmom/kenali-gejala-prediabetes-pada-anak-sebelum-terlambat-26dUH3BOq21",
+    createdAt: "2025-10-12T09:20:00Z",
+    doctorReview: {
+      id: "rev-kump-13",
+      articleId: "art-kump-13",
+      reviewerName: "dr. Martha Rosana, Sp.PD",
+      reviewerTitle: "Dokter Spesialis Penyakit Dalam - RSUPN Dr. Cipto Mangunkusumo",
+      strNumber: "STR-3171-4458-2023",
+      hospital: "RSUPN Dr. Cipto Mangunkusumo Jakarta",
+      reviewNotes: "Fase prediabetes adalah satu-satunya jendela kesempatan di mana kelainan metabolisme masih 100% bisa dibalikkan menjadi normal (reversibel) tanpa perlu terapi obat seumur hidup.",
+      approvalStatus: "Approved",
+      reviewedAt: "2025-10-13T16:00:00Z",
+    },
+  },
+  {
+    id: "art-kump-14",
+    title: "Cegah Diabetes dengan Perilaku CERDIK Sesuai Pedoman Kemenkes RI",
+    category: "Pola Hidup & Aktivitas",
+    summary: "Strategi komprehensif Kemenkes RI melalui gerakan CERDIK: Cek kesehatan berkala, Enyahkan asap rokok, Rajin aktivitas fisik, Diet seimbang, Istirahat cukup 7-8 jam, dan Kelola stres untuk memangkas risiko diabetes hingga 58%.",
+    content: `
+### Menangkal Diabetes dengan Rumus 'CERDIK' Kemenkes RI
+Kementerian Kesehatan RI telah merancang strategi pencegahan penyakit tidak menular (PTM) yang sangat mudah dihafal dan dijalankan oleh masyarakat bernama **CERDIK**.
+
+Berikut penjabaran 6 langkah CERDIK dalam konteks pencegahan diabetes melitus:
+
+### 1. C - Cek Kesehatan Secara Berkala
+- Lakukan skrining risiko diabetes dan pemeriksaan gula darah minimal **1 tahun sekali** bagi individu sehat, atau **6 bulan sekali** jika memiliki riwayat keluarga dengan diabetes atau berat badan berlebih.
+- Gunakan fitur Cek Risiko FINDRISC di DIASERA untuk memetakan potensi risiko 10 tahun ke depan.
+
+### 2. E - Enyahkan Asap Rokok
+- Nikotin dalam rokok merusak sel endotel pembuluh darah dan memicu peradangan sistemik yang memperburuk resistensi insulin.
+- Perokok aktif memiliki risiko **30 - 40% lebih tinggi** terkena diabetes tipe 2 dibanding orang yang tidak merokok.
+
+### 3. R - Rajin Beraktivitas Fisik
+- Jangan biarkan tubuh diam (*sedentary*) lebih dari 2 jam berturut-turut. Lakukan peregangan atau jalan kaki 5 menit di sela-sela waktu kerja di kantor.
+- Targetkan minimal 7.500 langkah per hari.
+
+### 4. D - Diet Sehat dan Seimbang
+- Terapkan konsep 'Isi Piringku': batasi gula, garam, dan minyak, serta penuhi kebutuhan mikronutrien dari sayuran hijau dan buah segar berindeks glikemik rendah.
+
+### 5. I - Istirahat yang Cukup (7 - 8 Jam)
+- Kurang tidur kronis (&lt; 6 jam per malam) meningkatkan hormon kortisol dan ghrelin yang merangsang nafsu makan berlebih serta membuat gula darah pagi melonjak tinggi.
+
+### 6. K - Kelola Stres dengan Baik
+- Saat mengalami stres emosional berat, tubuh memproduksi hormon kortisol dan adrenalin yang memicu hati memompa cadangan glukosa ke aliran darah.
+- Lakukan relaksasi, meditasi, hobi yang menyenangkan, atau beribadah untuk menjaga ketenangan sistem saraf.
+    `,
+    readingTimeMinutes: 5,
+    featuredImage: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
+    author: "Humas Kesehatan / kumparan.com",
+    sourceMedia: "kumparan.com",
+    sourceUrl: "https://kumparan.com/humas-kota-bandung/cegah-diabetes-dengan-perilaku-cerdik-1s9dh47j78c",
+    createdAt: "2025-11-05T08:00:00Z",
+    doctorReview: {
+      id: "rev-kump-14",
+      articleId: "art-kump-14",
+      reviewerName: "dr. Siti Rahmawati, Sp.PD, FINASIM",
+      reviewerTitle: "Dokter Spesialis Penyakit Dalam",
+      strNumber: "STR-3214-9901-2023",
+      hospital: "RSUD Cipto Mangunkusumo",
+      reviewNotes: "Perilaku CERDIK merangkum semua pilar primer pencegahan diabetes secara terpadu. Edukasi ini wajib dibaca oleh semua masyarakat usia produktif.",
+      approvalStatus: "Approved",
+      reviewedAt: "2025-11-06T15:30:00Z",
+    },
+  },
 ];

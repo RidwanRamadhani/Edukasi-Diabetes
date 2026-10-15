@@ -323,6 +323,7 @@ export function DiabetesProvider({ children }: { children: React.ReactNode }) {
                 sourceUrl: fresh.sourceUrl,
                 sourceMedia: fresh.sourceMedia,
                 author: fresh.author,
+                doctorReview: fresh.doctorReview,
               };
             }
             return art;
