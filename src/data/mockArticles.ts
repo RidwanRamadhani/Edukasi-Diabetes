@@ -280,10 +280,10 @@ Diabetes Melitus adalah kelainan metabolik kronis yang ditandai dengan kadar glu
 - **Batasi Minuman Manis Kemasan**: Ganti minuman berpemanis dengan air mineral, teh hijau tanpa gula, atau infused water.
     `,
     readingTimeMinutes: 5,
-    featuredImage: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80",
+    featuredImage: "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1561786399/nibmpd1b5wajgzf91nkj.jpg",
     author: "Gariza Chandra Multazam / kumparan.com",
     sourceMedia: "kumparan.com",
-    sourceUrl: "https://kumparan.com/topic/diabetes",
+    sourceUrl: "https://kumparan.com/gariza-chandra-multazam/mengenal-tentang-penyakit-diabetes-jenis-gejala-hingga-pencegahannya-20MjAyu6l6l",
     createdAt: "2024-04-05T07:15:00Z",
     doctorReview: {
       id: "rev-kump-7",

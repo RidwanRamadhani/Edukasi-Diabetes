@@ -62,7 +62,7 @@ export function ArticleModal({ article, onClose }: ArticleModalProps) {
                 alt={article.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent p-3 sm:p-4 text-white flex items-center justify-between text-xs">
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent p-3 sm:p-4 text-white flex items-center justify-between text-xs z-10">
                 <span className="font-medium text-slate-200 truncate">
                   Dokumentasi Foto: {article.sourceMedia || "kumparan.com"}
                 </span>
@@ -71,10 +71,11 @@ export function ArticleModal({ article, onClose }: ArticleModalProps) {
                     href={article.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] font-bold text-cyan-300 hover:text-white underline shrink-0 transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/50 hover:bg-black/75 backdrop-blur-xs text-[11px] font-bold text-cyan-300 hover:text-white border border-cyan-400/40 hover:border-cyan-300 shrink-0 transition-all cursor-pointer z-20 shadow-xs"
                   >
                     <span>Artikel Asli Kumparan</span>
-                    <ExternalLink className="w-3 h-3" />
+                    <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 )}
               </div>
@@ -141,17 +142,31 @@ export function ArticleModal({ article, onClose }: ArticleModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/80 flex flex-wrap items-center justify-between gap-3">
           <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
-            <Globe className="w-3.5 h-3.5 text-blue-600" />
+            <Globe className="w-3.5 h-3.5 text-blue-600 shrink-0" />
             <span>Materi Asli Kumparan Terverifikasi oleh Tim Dokter DIASERA</span>
           </div>
-          <button
-            onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold cursor-pointer"
-          >
-            Tutup Artikel
-          </button>
+          <div className="flex items-center gap-2">
+            {article.sourceUrl && (
+              <a
+                href={article.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-bold transition-colors cursor-pointer"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span>Buka Berita di Kumparan</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            )}
+            <button
+              onClick={onClose}
+              className="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold cursor-pointer"
+            >
+              Tutup Artikel
+            </button>
+          </div>
         </div>
       </div>
     </div>
